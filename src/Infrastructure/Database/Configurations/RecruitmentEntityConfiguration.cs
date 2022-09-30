@@ -36,11 +36,8 @@ public class RecruitmentEntityConfiguration : ModifyEntityConfiguration<Recruitm
     builder.Property(e => e.ExperienceFrom)
       .HasColumnType(SQLColumnType.TINYINT);
 
-    builder.Property(e => e.SalaryMin)
-      .HasColumnType(SQLColumnType.TINYINT);
-
     builder.Property(e => e.Number)
-      .HasColumnType(SQLColumnType.INT);
+      .HasColumnType(SQLColumnType.TINYINT);
 
     builder.HasOne(e => e.Position)
       .WithMany(e => e.Recruitments)

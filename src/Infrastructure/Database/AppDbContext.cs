@@ -45,12 +45,18 @@ public class AppDbContext : IdentityDbContext<User>, IAppDbContext
 			{
 				entry.Entity.CreatedDate = DateTime.Now;
 				entry.Entity.ModifiedDate = DateTime.Now;
-			}
+
+				//remove later
+				entry.Entity.CreatedBy = "d1d99d84-f944-43c2-872a-8e66386ab936";
+				entry.Entity.ModifiedBy = "d1d99d84-f944-43c2-872a-8e66386ab936";
+
+      }
 
 			if(entry.State == EntityState.Modified)
 			{
 				entry.Entity.ModifiedDate = DateTime.Now;
-			}
+        entry.Entity.ModifiedBy = "d1d99d84-f944-43c2-872a-8e66386ab936"; // remove later
+      }
 		}
 
 		return base.SaveChangesAsync(cancellationToken);
@@ -63,4 +69,6 @@ public class AppDbContext : IdentityDbContext<User>, IAppDbContext
 	public DbSet<Booking> Bookings => Set<Booking>();
 	public DbSet<SkillTag> SkillTags => Set<SkillTag>();
 	public DbSet<Position> Positions => Set<Position>();
+	public DbSet<Recruitment> Recruitments => Set<Recruitment>();
+	public DbSet<Candidate> Candidates => Set<Candidate>();
 }

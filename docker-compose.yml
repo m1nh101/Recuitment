@@ -1,0 +1,34 @@
+# Please refer https://aka.ms/HTTPSinContainer on how to setup an https developer certificate for your ASP .NET Core service.
+
+version: '3.8'
+
+services:
+  db-server:
+    image: mcr.microsoft.com/mssql/server
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: "M1ng@2002"
+      MSSQL_PID: "Express"
+    ports:
+      - "1444:1433"
+
+  api:
+    image: api
+    build:
+      context: .
+      dockerfile: src/API/Dockerfile
+    environment:
+      - DB__Server=db_server
+      # - DB__Port=1444
+      # - DB__Name=RecruitDb
+      # - DB__UID=sa
+      # - DB__PWD=M1ng@2002
+      - ENV=Docker
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=M1ng@2002
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+    volumes:
+      - ~/.aspnet/https:/https:ro
+    ports:
+      - 5001:443

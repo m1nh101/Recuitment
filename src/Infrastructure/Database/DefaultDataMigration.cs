@@ -72,7 +72,8 @@ public class DefaultDataMigration
 		if (!_context.Departments.Any())
 		{
 			Department system = new() { Name = "Hệ thống", Location = "System", Status = SharedKernel.Enums.Status.Active };
-			_context.Departments.Add(system);
+			Department technique = new() { Name = "Kỹ thuật", Location = "System", Status = SharedKernel.Enums.Status.Active };
+			_context.Departments.AddRange(system, technique);
 			_context.SaveChanges();
 		}
 

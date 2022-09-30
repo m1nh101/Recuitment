@@ -20,6 +20,10 @@ public class Recruitment : ModifyEntity
   public virtual Department? Department { get; set; }
   public virtual Position? Position { get; set; }
   public virtual ICollection<RecruitSkillTag>? SkillTags { get; set; }
-  public virtual ICollection<Candidate>? Candidates { get; set; }
+
+  private readonly List<Candidate> _candidates = new();
+  public IReadOnlyCollection<Candidate> Candidates => _candidates.AsReadOnly();
+
+  public void AddCandidate(Candidate candidate) => _candidates.Add(candidate);
 }
 

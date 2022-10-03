@@ -1,6 +1,6 @@
 using API.Configurations;
+using API.Helpers;
 using Core;
-using Microsoft.AspNetCore.Builder;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,7 +10,11 @@ builder.Services.ConfigureDatabase(builder.Configuration);
 
 builder.Services.ConfigureCoreServices();
 
+builder.Services.ConfigureCors(builder.Configuration);
+
 builder.Services.AddControllers();
+
+builder.Services.AddScoped<IFileUpload, FileUpload>();
 
 builder.Services.AddSwaggerGen();
 
@@ -31,6 +35,10 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors("cors");
+
+app.UseStaticFiles();
 
 app.UseAuthorization();
 

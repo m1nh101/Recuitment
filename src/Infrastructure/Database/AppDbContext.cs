@@ -1,4 +1,8 @@
 ﻿using Core.Entities;
+using Core.Entities.Bookings;
+using Core.Entities.Candidates;
+using Core.Entities.Recruitments;
+using Core.Entities.Users;
 using Core.Interfaces;
 using Infrastructure.Database.Configurations;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -11,7 +15,6 @@ public class AppDbContext : IdentityDbContext<User>, IAppDbContext
 {
 	public AppDbContext(DbContextOptions<AppDbContext> options): base(options)
 	{
-
 	}
 
 	protected override void OnModelCreating(ModelBuilder builder)
@@ -22,6 +25,7 @@ public class AppDbContext : IdentityDbContext<User>, IAppDbContext
 		builder.ApplyConfiguration(new DepartmentEntityConfiguration());
 		builder.ApplyConfiguration(new RecruitmentEntityConfiguration());
 		builder.ApplyConfiguration(new CandidateEntityConfiguration());
+		builder.ApplyConfiguration(new ApplicationEntityConfiguration());
 		builder.ApplyConfiguration(new CandidateSkillTagEntityConfiguration());
 		builder.ApplyConfiguration(new BookingEntityConfiguration());
 		builder.ApplyConfiguration(new InterviewEntityConfiguration());

@@ -1,4 +1,5 @@
 ﻿using Core.Entities;
+using Core.Entities.Users;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 

@@ -1,4 +1,4 @@
-﻿using Core.Entities;
+﻿using Core.Entities.Bookings;
 using Infrastructure.Database.Configurations.Commons;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -32,9 +32,9 @@ public class BookingEntityConfiguration : ModifyEntityConfiguration<Booking>
     builder.Property(e => e.ReviewerId)
       .IsRequired();
 
-    builder.HasOne(e => e.Candiate)
-      .WithMany(e => e.Bookings)
-      .HasForeignKey(e => e.CandidateId);
+    builder.HasOne(e => e.Application)
+      .WithOne(e => e.Booking)
+      .HasForeignKey<Booking>(e => e.ApplicationId);
 
     base.Configure(builder);
   }

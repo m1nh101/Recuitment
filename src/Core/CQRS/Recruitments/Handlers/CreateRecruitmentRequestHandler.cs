@@ -2,7 +2,7 @@
 using Core.CQRS.Recruitments.Requests;
 using Core.CQRS.Recruitments.Responses;
 using Core.CQRS.Responses;
-using Core.Entities;
+using Core.Entities.Recruitments;
 using Core.Interfaces;
 using MediatR;
 
@@ -22,7 +22,7 @@ public class CreateRecruitmentRequestHandler : IRequestHandler<CreateNewRecruitm
 
   public async Task<ActionResponse> Handle(CreateNewRecruitmentRequest request, CancellationToken cancellationToken)
   {
-    var recruitment = _mapper.Map<Recruitment>(request);
+    var recruitment = Recruitment.Create(request);
 
     await _context.Recruitments.AddAsync(recruitment, cancellationToken);
     await _context.Commit();

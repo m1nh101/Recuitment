@@ -15,10 +15,7 @@ public class InterviewResult : ModifyEntity
   public int SalaryTo { get; set; }
   public int LevelId { get; set; }
   public int InterviewId { get; set; }
-  public int CandidateId { get; set; }
 
   public virtual Interview? Interview { get; set; }
-  public virtual Candidate? Candidate { get; set; }
   public virtual Level? Level { get; set; }
 }
-

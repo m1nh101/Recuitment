@@ -1,4 +1,4 @@
-﻿using Core.Entities;
+﻿using Core.Entities.Recruitments;
 using Infrastructure.Database.Configurations.Commons;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -19,12 +19,12 @@ public class RecruitmentEntityConfiguration : ModifyEntityConfiguration<Recruitm
 
     builder.Property(e => e.Content)
       .HasColumnType(SQLColumnType.NVARCHAR)
-      .HasMaxLength(1000)
+      .HasMaxLength(3000)
       .IsRequired();
 
     builder.Property(e => e.Benifit)
       .HasColumnType(SQLColumnType.NVARCHAR)
-      .HasMaxLength(1000)
+      .HasMaxLength(3000)
       .IsRequired();
 
     builder.Property(e => e.SalaryMin)

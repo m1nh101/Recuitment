@@ -57,11 +57,6 @@ public class InterviewResultEntityConfiguration : ModifyEntityConfiguration<Inte
       .WithMany(e => e.Interviews)
       .HasForeignKey(e => e.LevelId);
 
-    builder.HasOne(e => e.Candidate)
-      .WithMany(e => e.InterviewResults)
-      .HasForeignKey(e => e.CandidateId)
-      .OnDelete(DeleteBehavior.NoAction);
-
     builder.HasOne(e => e.Interview)
       .WithOne(e => e.Result)
       .HasForeignKey<InterviewResult>(e => e.InterviewId)

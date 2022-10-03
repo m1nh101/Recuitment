@@ -1,4 +1,5 @@
-﻿using SharedKernel.Bases;
+﻿using Core.Entities.Candidates;
+using SharedKernel.Bases;
 
 namespace Core.Entities;
 

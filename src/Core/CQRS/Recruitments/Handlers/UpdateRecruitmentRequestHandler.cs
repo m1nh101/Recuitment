@@ -26,7 +26,7 @@ public class UpdateRecruitmentRequestHandler
     if (recruitment == null)
       return new NotFoundResponse();
 
-    _mapper.Map(request, recruitment);
+    recruitment.Update(request);
 
     _context.Recruitments.Update(recruitment);
     await _context.Commit();

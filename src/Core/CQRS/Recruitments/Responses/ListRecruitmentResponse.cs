@@ -1,4 +1,6 @@
-﻿namespace Core.CQRS.Recruitments.Responses;
+﻿using Core.Entities.Recruitments;
+
+namespace Core.CQRS.Recruitments.Responses;
 
 public class ListRecruitmentResponse
 {
@@ -11,4 +13,20 @@ public class ListRecruitmentResponse
   public int ExperienceFrom { get; set; }
   public int ExperienceTo { get; set; }
   public int Number { get; set; }
+
+  public static ListRecruitmentResponse ConvertFrom(Recruitment source)
+  {
+    return new ListRecruitmentResponse
+    {
+      Id = source.Id,
+      StartDate = source.StartDate,
+      EndDate = source.EndDate,
+      SalaryMax = source.SalaryMax,
+      SalaryMin = source.SalaryMin,
+      ExperienceFrom = source.ExperienceFrom,
+      ExperienceTo = source.ExperienceTo,
+      Number = source.Number,
+      Name = source.Name
+    };
+  }
 }

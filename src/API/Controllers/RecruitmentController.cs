@@ -74,6 +74,19 @@ public class RecruitmentController : ControllerBase
 
     return NotFound(response);
   }
+
+	[HttpGet]
+	[Route("{id:int}/candidates/{candidateId:int}")]
+	public async Task<IActionResult> GetCandidateFromRecruitment([FromRoute] int id, [FromRoute] int candidateId)
+	{
+		var request = new GetCandidateDetailRequest(candidateId, id);
+		var response = await _mediator.Send(request);
+
+		if (response.StatusCode == System.Net.HttpStatusCode.OK)
+			return Ok(response);
+
+		return BadRequest(response);
+	}
 	
 	[HttpPost]
 	[Route("{id:int}/candidates")]
@@ -81,6 +94,42 @@ public class RecruitmentController : ControllerBase
 		[FromBody] AddCandidateToRecruitmentRequest request)
 	{
 		request.RecruitmentId = id;
+		var response = await _mediator.Send(request);
+
+		if (response.StatusCode == System.Net.HttpStatusCode.OK)
+			return Ok(response);
+
+		return BadRequest(response);
+	}
+
+	[HttpPatch]
+	[Route("{id:int}/candidates/{candidateId:int}")]
+	public async Task<IActionResult> UpdateCandidateFromRecruitment([FromRoute] int id,
+		[FromRoute] int candidateId,
+		[FromBody] UpdateCandidateRequest request)
+	{
+		if (candidateId != request.Id)
+			return BadRequest();
+
+		request.RecruitmentId = id;
+		var response = await _mediator.Send(request);
+
+		if (response.StatusCode == System.Net.HttpStatusCode.OK)
+			return Ok(response);
+
+		return BadRequest(response);
+	}
+
+	[HttpDelete]
+	[Route("{id:int}/candidates/{candidateId:int}")]
+	public async Task<IActionResult> RemoveCandidate([FromRoute] int id, [FromRoute] int candidateId)
+	{
+		var request = new DeleteCandidateFromRecruitmentRequest
+		{
+			CandidateId = candidateId,
+			RecruitmentId = id
+		};
+
 		var response = await _mediator.Send(request);
 
 		if (response.StatusCode == System.Net.HttpStatusCode.OK)

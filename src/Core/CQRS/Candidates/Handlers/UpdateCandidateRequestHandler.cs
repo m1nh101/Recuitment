@@ -4,6 +4,7 @@ using Core.CQRS.Candidates.Responses;
 using Core.CQRS.Responses;
 using Core.Interfaces;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Core.CQRS.Candidates.Handlers;
 
@@ -20,12 +21,16 @@ public class UpdateCandidateRequestHandler : IRequestHandler<UpdateCandidateRequ
 
   public async Task<ActionResponse> Handle(UpdateCandidateRequest request, CancellationToken cancellationToken)
   {
-    var candidate = await _context.Candidates.FindAsync(request.Id);
+    var candidate = await _context.Candidates
+      .Include(e => e.Applications)
+      .FirstOrDefaultAsync(e => e.Id == request.Id, cancellationToken);
+
+    
 
     if (candidate == null)
       return new NotFoundResponse();
 
-    _mapper.Map(request, candidate);
+    //candidate.Update(request.RecruitmentId, request.Attachment);
 
     _context.Candidates.Update(candidate);
     await _context.Commit();

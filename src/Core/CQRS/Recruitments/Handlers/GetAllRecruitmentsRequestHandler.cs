@@ -19,18 +19,9 @@ public class GetAllRecruitmentsRequestHandler : IRequestHandler<GetAllRecruitmen
 
   public Task<ActionResponse> Handle(GetAllRecruitmentsRequest request, CancellationToken cancellationToken)
   {
-    var query = _context.Recruitments.Select(e => new ListRecruitmentResponse
-    {
-      Id = e.Id,
-      StartDate = e.StartDate,
-      EndDate = e.EndDate,
-      SalaryMax = e.SalaryMax,
-      SalaryMin = e.SalaryMin,
-      ExperienceFrom = e.ExperienceFrom,
-      ExperienceTo = e.ExperienceTo,
-      Number = e.Number,
-      Name = e.Name
-    }).AsNoTracking();
+    var query = _context.Recruitments.
+      Select(item => ListRecruitmentResponse.ConvertFrom(item))
+      .AsNoTracking();
 
     var response = new SuccessResponse("Thành công", query);
 

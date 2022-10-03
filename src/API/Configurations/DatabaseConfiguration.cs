@@ -1,4 +1,4 @@
-﻿using Core.Entities;
+﻿using Core.Entities.Users;
 using Core.Interfaces;
 using Infrastructure.Database;
 using Microsoft.AspNetCore.Identity;
@@ -13,7 +13,6 @@ public static class DatabaseConfiguration
     services.AddDbContext<AppDbContext>(options =>
     {
       string connection = GetConnection(configuration);
-      Console.WriteLine(connection);
 
       options.UseSqlServer(connection,
         x => x.MigrationsAssembly(typeof(AppDbContext).Assembly.FullName));

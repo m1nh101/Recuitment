@@ -17,6 +17,11 @@ code {
   padding: 1rem;
 }
 
+.ptb{
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
 .flex-end{
   display: flex;
   justify-content: end;

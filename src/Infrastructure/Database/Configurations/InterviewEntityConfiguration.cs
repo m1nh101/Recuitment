@@ -19,7 +19,7 @@ public class InterviewEntityConfiguration : ModifyEntityConfiguration<Interview>
 
     builder.Property(e => e.Description)
       .HasColumnType(SQLColumnType.NVARCHAR)
-      .HasMaxLength(1000)
+      .HasMaxLength(3000)
       .IsRequired();
 
     builder.HasOne(e => e.Booking)

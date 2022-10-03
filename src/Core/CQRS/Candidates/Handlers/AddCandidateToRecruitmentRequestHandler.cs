@@ -1,7 +1,8 @@
 ﻿using AutoMapper;
 using Core.CQRS.Candidates.Requests;
+using Core.CQRS.Candidates.Responses;
 using Core.CQRS.Responses;
-using Core.Entities;
+using Core.Entities.Candidates;
 using Core.Interfaces;
 using MediatR;
 
@@ -22,18 +23,20 @@ public class AddCandidateToRecruitmentRequestHandler
 
   public async Task<ActionResponse> Handle(AddCandidateToRecruitmentRequest request, CancellationToken cancellationToken)
   {
-    var candidate = _mapper.Map<Candidate>(request);
+    var candidate = Candidate.Create(request);
     
     var recruitment = await _context.Recruitments.FindAsync(request.RecruitmentId);
 
     if (recruitment == null)
       throw new NullReferenceException();
 
-    recruitment.AddCandidate(candidate);
+    recruitment.CreateNewApplication(candidate, request.Attachment);
 
     _context.Recruitments.Update(recruitment);
     await _context.Commit();
 
-    return new SuccessResponse("Thêm ứng viên thành công", candidate);
+    var response = _mapper.Map<CandidateDetailResponse>(candidate);
+
+    return new SuccessResponse("Thêm ứng viên thành công", response);
   }
 }

@@ -1,4 +1,7 @@
 ﻿using Core.Entities;
+using Core.Entities.Bookings;
+using Core.Entities.Candidates;
+using Core.Entities.Recruitments;
 using Microsoft.EntityFrameworkCore;
 
 namespace Core.Interfaces;

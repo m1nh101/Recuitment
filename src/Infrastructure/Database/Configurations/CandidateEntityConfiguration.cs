@@ -1,4 +1,4 @@
-﻿using Core.Entities;
+﻿using Core.Entities.Candidates;
 using Infrastructure.Database.Configurations.Commons;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -27,19 +27,10 @@ public class CandidateEntityConfiguration : ModifyEntityConfiguration<Candidate>
       .HasMaxLength(500)
       .IsRequired();
 
-    builder.Property(e => e.Attachment)
-      .HasColumnType(SQLColumnType.NVARCHAR)
-      .HasMaxLength(500)
-      .IsRequired();
-
     builder.Property(e => e.Qualification)
       .HasColumnType(SQLColumnType.NVARCHAR)
       .HasMaxLength(500)
       .IsRequired();
-
-    builder.HasOne(e => e.Recruitment)
-      .WithMany(e => e.Candidates)
-      .HasForeignKey(e => e.RecruitmentId);
 
     base.Configure(builder);
   }

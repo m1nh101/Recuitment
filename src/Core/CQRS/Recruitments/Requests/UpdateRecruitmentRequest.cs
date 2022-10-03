@@ -5,7 +5,7 @@ using MediatR;
 
 namespace Core.CQRS.Recruitments.Requests;
 
-public class UpdateRecruitmentRequest : AddCandidateToRecruitmentRequest,
+public class UpdateRecruitmentRequest : CreateNewRecruitmentRequest,
   IRequest<ActionResponse>
 {
     public int Id { get; set; }

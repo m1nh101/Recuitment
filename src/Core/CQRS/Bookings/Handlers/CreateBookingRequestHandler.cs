@@ -2,9 +2,11 @@
 using Core.CQRS.Bookings.Requests;
 using Core.CQRS.Bookings.Respones;
 using Core.CQRS.Responses;
+using Core.Entities;
 using Core.Entities.Bookings;
 using Core.Interfaces;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Core.CQRS.Bookings.Handlers;
 
@@ -21,9 +23,21 @@ public class CreateBookingRequestHandler : IRequestHandler<CreateNewBookingReque
 
   public async Task<ActionResponse> Handle(CreateNewBookingRequest request, CancellationToken cancellationToken)
   {
-    var booking = Booking.Create(request);
+    var application = await _context.Applications.FirstOrDefaultAsync(e => e.Id == request.ApplicationId, cancellationToken);
 
-    await _context.Bookings.AddAsync(booking, cancellationToken);
+    if (application == null)
+      return new NotFoundResponse();
+
+    var interview = Interview.Setup(request.Start, request.End);
+
+    var booking = Booking.Create(request.Date, request.Note,
+      request.Place, request.MeetingUrl, 
+      request.MeetingType, request.ReviewerId, interview);
+
+    application.BookingInterview(booking);
+
+    _context.Applications.Update(application);
+    
     await _context.Commit();
 
     var response = _mapper.Map<GeneralBookingResponse>(booking);

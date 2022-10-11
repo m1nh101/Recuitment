@@ -12,15 +12,15 @@ public class InterviewEntityConfiguration : ModifyEntityConfiguration<Interview>
   {
     builder.ToTable("Interviews");
 
-    builder.Property(e => e.Name)
-      .HasColumnType(SQLColumnType.NVARCHAR)
-      .HasMaxLength(500)
-      .IsRequired();
+    //builder.Property(e => e.Name)
+    //  .HasColumnType(SQLColumnType.NVARCHAR)
+    //  .HasMaxLength(500)
+    //  .IsRequired();
 
-    builder.Property(e => e.Description)
-      .HasColumnType(SQLColumnType.NVARCHAR)
-      .HasMaxLength(3000)
-      .IsRequired();
+    //builder.Property(e => e.Description)
+    //  .HasColumnType(SQLColumnType.NVARCHAR)
+    //  .HasMaxLength(3000)
+    //  .IsRequired();
 
     builder.HasOne(e => e.Booking)
       .WithOne(e => e.Interview)

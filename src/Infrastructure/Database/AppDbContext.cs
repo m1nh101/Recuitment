@@ -36,6 +36,14 @@ public class AppDbContext : IdentityDbContext<User>, IAppDbContext
       config.HasOne(e => e.Department)
         .WithMany(e => e.Users)
         .HasForeignKey(e => e.DepartmentId);
+
+			config.HasOne(e => e.Level)
+				.WithMany(e => e.Users)
+				.HasForeignKey(e => e.LevelId);
+
+			config.HasOne(e => e.Position)
+				.WithMany(e => e.Users)
+				.HasForeignKey(e => e.PositionId);
     });
 
     base.OnModelCreating(builder);
@@ -75,4 +83,5 @@ public class AppDbContext : IdentityDbContext<User>, IAppDbContext
 	public DbSet<Position> Positions => Set<Position>();
 	public DbSet<Recruitment> Recruitments => Set<Recruitment>();
 	public DbSet<Candidate> Candidates => Set<Candidate>();
+	public DbSet<Application> Applications => Set<Application>();
 }

@@ -6,15 +6,32 @@ namespace Core.Entities.Bookings;
 
 public partial class Booking : ModifyEntity
 {
-    public string Name { get; set; } = string.Empty;
-    public DateTime Date { get; set; }
-    public string Note { get; set; } = string.Empty;
-    public string Place { get; set; } = string.Empty;
-    public string MeetingUrl { get; set; } = string.Empty;
-    public MeetingType MeetingType { get; set; }
-    public string ReviewerId { get; set; } = string.Empty;
-    public int ApplicationId { get; set; }
+  private Booking()
+  {
+  }
 
-    public virtual Application? Application { get; set; }
-    public virtual Interview? Interview { get; set; }
+  public Booking(DateTime date, string note,
+    string place, string meetingUrl, MeetingType meetingType,
+    string reviewerId, Interview? interview)
+  {
+    Date = date;
+    Note = note;
+    Place = place;
+    MeetingUrl = meetingUrl;
+    MeetingType = meetingType;
+    ReviewerId = reviewerId;
+    Interview = interview;
+  }
+
+  public string Name { get; private set; } = string.Empty;
+  public DateTime Date { get; private set; }
+  public string Note { get; private set; } = string.Empty;
+  public string Place { get; private set; } = string.Empty;
+  public string MeetingUrl { get; private set; } = string.Empty;
+  public MeetingType MeetingType { get; private set; }
+  public string ReviewerId { get; private set; } = string.Empty;
+  public int ApplicationId { get; private set; }
+
+  public virtual Application? Application { get; set; }
+  public virtual Interview? Interview { get; set; }
 }

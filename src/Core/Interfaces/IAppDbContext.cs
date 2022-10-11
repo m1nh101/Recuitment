@@ -9,6 +9,7 @@ namespace Core.Interfaces;
 public interface IAppDbContext
 {
   DbSet<Recruitment> Recruitments { get; }
+  DbSet<Application> Applications { get; }
   DbSet<Booking> Bookings { get; }
   DbSet<Department> Departments { get; }
   DbSet<Level> Levels { get; }

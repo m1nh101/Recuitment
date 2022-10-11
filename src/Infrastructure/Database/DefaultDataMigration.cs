@@ -126,7 +126,8 @@ public class DefaultDataMigration
 				WorkType = SharedKernel.Enums.WorkType.FullTime,
 				Status = SharedKernel.Enums.Status.Active,
 				DepartmentId = 1,
-				Id = "d1d99d84-f944-43c2-872a-8e66386ab936"
+				Id = "d1d99d84-f944-43c2-872a-8e66386ab936",
+				Role = "admin"
       };
 
 			Task.Run(async () =>

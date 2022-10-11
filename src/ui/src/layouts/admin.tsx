@@ -35,6 +35,11 @@ const sidebarMenu: Array<ItemType> = [
     label: <Link to="candidate">Ứng viên</Link>,
     key: 'candidate',
     icon: <ContactsOutlined style={{fontSize: '16px'}}/>
+  },
+  {
+    label: <Link to="employees">Nhân viên</Link>,
+    key: 'employee',
+    icon: <ContactsOutlined style={{fontSize: '16px'}}/>
   }
 ]
 

@@ -14,4 +14,6 @@ public class CreateNewBookingRequest : IRequest<ActionResponse>
   public MeetingType MeetingType { get; set; }
   public string ReviewerId { get; set; } = string.Empty;
   public int ApplicationId { get; set; }
+  public DateTime Start { get; set; }
+  public DateTime End { get; set; }
 }

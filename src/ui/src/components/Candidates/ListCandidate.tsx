@@ -6,6 +6,7 @@ import { useState } from "react"
 import { Link } from "react-router-dom"
 import { deleteCandidateFromRecruitment } from "../../apis/candidate"
 import { CandidateViewProp } from "../../helpers/candidates"
+import NewBookingModal from "../Bookings/NewBookingModal"
 import UpdateCandidateModal from "./UpdateCandidateModal"
 
 interface ListCandidateProps {
@@ -19,6 +20,7 @@ const ListCandidate: React.FC<ListCandidateProps> = ({...props}): JSX.Element =>
   const [selectCandidate, setSelectCandidate] = useState<number>(0)
   
   const [visible, setVisible] = useState<boolean>(false)
+  const [bookingVisible, setBookingVisible] = useState<boolean>(false)
 
   const columns: ColumnsType<CandidateViewProp> = [
     {
@@ -60,7 +62,7 @@ const ListCandidate: React.FC<ListCandidateProps> = ({...props}): JSX.Element =>
       key: 'action',
       render: (_, data: CandidateViewProp) => {
         return (<Space>
-          <Button type="primary">Tạo lịch phỏng vấn</Button>
+          <Button type="primary" onClick={() => setBookingVisible(true)}>Tạo lịch phỏng vấn</Button>
           <Button type="primary" onClick={() => {setSelectCandidate(data.id); setVisible(true)}}>Chỉnh sửa</Button>
           <Button onClick={() => showConfirm(data.id)} type="primary" danger>Xoá</Button>
         </Space>)
@@ -81,11 +83,18 @@ const ListCandidate: React.FC<ListCandidateProps> = ({...props}): JSX.Element =>
   return (
     <>
       <Table bordered={true} dataSource={props.source} columns={columns}></Table>
+      
       <UpdateCandidateModal
         visible={visible}
         changeVisible={setVisible}
         recruitmentId={parseInt(props.recruitment!)}
-        candidateId={selectCandidate}/>
+        candidateId={selectCandidate} />
+
+      <NewBookingModal
+        visible={bookingVisible}
+        changeVisible={setBookingVisible}
+        recruitmentId={parseInt(props.recruitment!)}
+        candidate={selectCandidate} />
     </>
   )
 }

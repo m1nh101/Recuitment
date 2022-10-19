@@ -1,5 +1,8 @@
-﻿namespace Core.CQRS.Bookings.Requests;
+﻿using Core.CQRS.Responses;
+using MediatR;
 
-public class UpdateBookingRequest : CreateNewBookingRequest
-{
-}
+namespace Core.CQRS.Bookings.Requests;
+
+public sealed record UpdateBookingRequest(
+  int Id,
+  CreateNewBookingRequest Payload) : IRequest<ActionResponse>;

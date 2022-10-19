@@ -24,7 +24,7 @@ public class GetRecruitmentDetailRequestHandler : IRequestHandler<GetRecruitment
   public async Task<ActionResponse> Handle(GetRecruitmentDetailRequest request, CancellationToken cancellationToken)
   {
     var recruitment = await _context.Recruitments
-      .Include(e => e.Applications.Where(e => e.Status == SharedKernel.Enums.Status.Active))
+      .Include(e => e.Applications.Where(e => e.Status != SharedKernel.Enums.Status.Cancel))
       .ThenInclude(e => e.Candidate)
       .AsNoTracking()
       .FirstOrDefaultAsync(e => e.Id == request.Id, cancellationToken);
@@ -34,16 +34,17 @@ public class GetRecruitmentDetailRequestHandler : IRequestHandler<GetRecruitment
 
     var responseData = _mapper.Map<RecruitmentDetailResponse>(recruitment);
 
-    responseData.Candidates = recruitment.Applications.Select(e => new ListCandidateResponse
+    responseData.Candidates = recruitment.Applications
+      .Select(e => new ListCandidateResponse
     {
       Name = e.Candidate!.Name,
-      Id = e.CandidateId,
+      Id = e.Id, //application id
       Email = e.Candidate!.Email,
       Phone = e.Candidate!.Phone,
-      Attachment = "",
       Address = e.Candidate!.Address,
       Gender = e.Candidate!.Gender,
-      Birthday = e.Candidate!.Birthday
+      Birthday = e.Candidate!.Birthday,
+      Status = e.Status,
     }).ToArray();
 
     return new SuccessResponse("Thành công", responseData);

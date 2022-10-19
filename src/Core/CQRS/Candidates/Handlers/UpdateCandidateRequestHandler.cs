@@ -2,6 +2,7 @@
 using Core.CQRS.Candidates.Requests;
 using Core.CQRS.Candidates.Responses;
 using Core.CQRS.Responses;
+using Core.Entities.Candidates;
 using Core.Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -25,12 +26,15 @@ public class UpdateCandidateRequestHandler : IRequestHandler<UpdateCandidateRequ
       .Include(e => e.Applications)
       .FirstOrDefaultAsync(e => e.Id == request.Id, cancellationToken);
 
-    
-
     if (candidate == null)
       return new NotFoundResponse();
 
-    //candidate.Update(request.RecruitmentId, request.Attachment);
+    var payload = _mapper.Map<Candidate>(request.Payload);
+    
+    if (request.Payload.RecruitmentId != 0)
+      candidate.Update(payload, request.Payload.RecruitmentId, request.Payload.Attachment);
+    else
+      candidate.Update(payload);
 
     _context.Candidates.Update(candidate);
     await _context.Commit();

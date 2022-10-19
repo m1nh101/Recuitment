@@ -1,11 +1,9 @@
 import { Form, Input, Slider, Select, DatePicker, FormInstance } from "antd";
-import { useForm } from "antd/es/form/Form";
 import { Store } from "antd/lib/form/interface";
 import TextArea from "antd/lib/input/TextArea";
-import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import { v4 } from "uuid";
-import { DepartmentProp, getDepartments } from "../../apis/department";
-import { PositionProps, getPositions } from "../../apis/position";
+import { getDepartments, getPositions } from "../../store/utilSlice";
 
 export interface RecruitmentFormProp{
   initialValues: Store | undefined
@@ -18,13 +16,8 @@ const { Option } = Select
 const { RangePicker } = DatePicker
 
 const RecruitmentForm: React.FC<RecruitmentFormProp> = ({...props}): JSX.Element => {
-  const [departments, setDepartments] = useState<Array<DepartmentProp>>([])
-  const [positions, setPositions] = useState<Array<PositionProps>>([])
-
-  useEffect(() => {
-    getDepartments().then(res => setDepartments(res.data ?? []))
-    getPositions().then(res => setPositions(res.data ?? []))
-  }, [])
+  const departments = useSelector(getDepartments)
+  const positions = useSelector(getPositions)
 
   return (
     <Form

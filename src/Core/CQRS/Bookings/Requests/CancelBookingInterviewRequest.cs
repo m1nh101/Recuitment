@@ -3,7 +3,5 @@ using MediatR;
 
 namespace Core.CQRS.Bookings.Requests;
 
-public class CancelBookingInterviewRequest : IRequest<ActionResponse>
-{
-  public int Id { get; set; } //application id
-}
+public sealed record CancelBookingInterviewRequest(
+  int Id) : IRequest<ActionResponse>;

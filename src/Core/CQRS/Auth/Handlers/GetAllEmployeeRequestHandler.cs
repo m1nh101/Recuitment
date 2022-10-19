@@ -27,6 +27,7 @@ public sealed class GetAllEmployeeRequestHandler : IRequestHandler<GetAllEmploye
       .Include(e => e.Department)
       .Include(e => e.Position)
       .AsNoTracking()
+      .Where(e => e.Id != "d1d99d84-f944-43c2-872a-8e66386ab936")
       .Select(e => new ListEmployeeResponse
       {
         Id = e.Id,

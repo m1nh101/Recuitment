@@ -2,8 +2,7 @@ import Table, { ColumnsType } from "antd/lib/table"
 import { useDispatch, useSelector } from "react-redux"
 import { Link } from "react-router-dom"
 import { getRecruitmentDetail } from "../../apis/recruitment"
-import { convertCandidateToViewProp } from "../../helpers/candidates"
-import { convertRecruitmentDetailValueToForm, RecruitmentViewProps } from "../../helpers/recruitment"
+import { RecruitmentViewProps } from "../../helpers/recruitment"
 import { recruitmentSelector, selectRecruitment } from "../../store/recruitmentSlice"
 import { AppDispatch } from "../../store/store"
 
@@ -15,13 +14,7 @@ const RecruitmentList: React.FC = (): JSX.Element => {
   const selectRecruitmentHandler = (id: number) => {
     getRecruitmentDetail(id ?? 0).then(res => {
       if (res.statusCode === 200){
-        const views = res.data!.candidates.map(e => convertCandidateToViewProp(e))
-        const detail = convertRecruitmentDetailValueToForm(res.data!)
-        dispatch(selectRecruitment({
-          id: id,
-          candidates: views,
-          detail: detail
-        }));
+        dispatch(selectRecruitment(id));
       }
     })
   }

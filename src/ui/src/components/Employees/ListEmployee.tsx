@@ -1,6 +1,8 @@
 import { Table } from "antd"
 import { ColumnsType } from "antd/lib/table"
+import { useSelector } from "react-redux"
 import { EmployeeViewProps } from "../../helpers/employee"
+import { getEmployees } from "../../store/employeeSlice"
 
 const ListEmployee: React.FC = (): JSX.Element => {
   const columns: ColumnsType<EmployeeViewProps> = [
@@ -31,7 +33,9 @@ const ListEmployee: React.FC = (): JSX.Element => {
     }
   ]
 
-  return <Table columns={columns}></Table>
+  const employees = useSelector(getEmployees)
+
+  return <Table columns={columns} dataSource={employees}></Table>
 }
 
 export default ListEmployee

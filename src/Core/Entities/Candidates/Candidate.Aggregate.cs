@@ -19,7 +19,7 @@ public partial class Candidate
       Note = request.Note,
       Address = request.Address,
       Gender = request.Gender,
-      Qualification = request.Qualification
+      Qualification = request.Qualification,
     };
   }
 
@@ -33,6 +33,17 @@ public partial class Candidate
     Note = source.Note;
     Birthday = source.Birthday;
     Qualification = source.Qualification;
+  }
+
+  public void Update(Candidate source, int recruitmentId, string attachment)
+  {
+    var recruitment = _applications.FirstOrDefault(e => e.RecruitmentId == recruitmentId);
+
+    if (recruitment == null)
+      throw new NullReferenceException();
+
+    Update(source);
+    recruitment.UpdateAttachment(attachment);
   }
 
   public string GetAttachmentByRecruitment(int recruitmentId)

@@ -3,6 +3,4 @@ using MediatR;
 
 namespace Core.CQRS.Recruitments.Requests;
 
-public class GetAllRecruitmentsRequest : IRequest<ActionResponse>
-{
-}
+public sealed record GetAllRecruitmentsRequest : IRequest<ActionResponse>;

@@ -2,6 +2,15 @@ import { Moment } from "moment"
 import client, { Response } from "./client"
 
 
+export enum Status {
+  BookedInterview = 4,
+  CanceledApply = 5,
+  WaitBookingInterview = 6
+}
+
+export interface CandidateViewType extends CandidateInRecruitmentProps
+{ key: string }
+
 export interface GeneralCandidateProps {
   id?: number
   name: string
@@ -10,6 +19,10 @@ export interface GeneralCandidateProps {
   email: string
   phone: string
   address: string
+}
+
+export interface CandidateInRecruitmentProps extends GeneralCandidateProps {
+  status: Status
 }
 
 export interface CandidateRequestProps extends GeneralCandidateProps {
@@ -26,7 +39,7 @@ export const postCandidateToRecruitment = async (recruitmentId: number, data: Ca
   return response.data
 }
 
-export const deleteCandidateFromRecruitment = async (recruitmentId: string, candidateId: string): Promise<boolean> => {
+export const deleteCandidateFromRecruitment = async (recruitmentId: number, candidateId: number): Promise<boolean> => {
   const response = await client.delete(`/recruitments/${recruitmentId}/candidates/${candidateId}`)
 
   return response.status === 200

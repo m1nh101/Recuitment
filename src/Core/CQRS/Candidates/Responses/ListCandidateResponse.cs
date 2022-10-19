@@ -8,8 +8,8 @@ public class ListCandidateResponse
   public string Name { get; set; } = string.Empty;
   public string Email { get; set; } = string.Empty;
   public string Phone { get; set; } = string.Empty;
-  public string Attachment { get; set; } = string.Empty;
   public Gender Gender { get; set; }
   public string Address { get; set; } = string.Empty;
   public DateTime Birthday { get; set; }
+  public Status Status { get; set; }
 }

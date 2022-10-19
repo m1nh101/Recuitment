@@ -13,10 +13,9 @@ public class Interview : ModifyEntity
   {
     StartTime = start;
     EndTime = end;
+    
   }
 
-  //public string Name { get; private set; } = string.Empty;
-  //public string Description { get; private set; } = string.Empty;
   public DateTime JoinStartTime { get; private set; }
   public DateTime JoinEndTime { get; private set; }
   public DateTime EndTime { get; private set; }
@@ -52,6 +51,7 @@ public class Interview : ModifyEntity
   public void Start()
   {
     JoinStartTime = DateTime.Now;
+    Status = Status.OnProcessing;
   }
 
   public void Finish()

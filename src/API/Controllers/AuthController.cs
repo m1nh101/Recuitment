@@ -23,4 +23,16 @@ public class AuthController : ControllerBase
 		var response = await _mediator.Send(request);
 		return Ok(response);
 	}
+
+	[HttpPost]
+	[Route("users")]
+	public async Task<IActionResult> CreateNewUser([FromBody] CreateNewUserRequest request)
+	{
+		var response = await _mediator.Send(request);
+
+		if (response.StatusCode == System.Net.HttpStatusCode.OK)
+			return Ok(response);
+
+		return BadRequest(response);
+	}
 }

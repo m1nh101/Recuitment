@@ -3,8 +3,6 @@ using MediatR;
 
 namespace Core.CQRS.Recruitments.Requests;
 
-public class DeleteCandidateFromRecruitmentRequest : IRequest<ActionResponse>
-{
-  public int RecruitmentId { get; set; }
-  public int CandidateId { get; set; }
-}
+public sealed record DeleteCandidateFromRecruitmentRequest(
+  int RecruitmentId,
+  int CandidateId) : IRequest<ActionResponse>;

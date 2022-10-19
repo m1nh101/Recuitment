@@ -1,6 +1,9 @@
-﻿using Core.CQRS.Auth.Requests;
+﻿using AutoMapper;
+using Core.CQRS.Auth.Requests;
+using Core.CQRS.Auth.Responses;
 using Core.CQRS.Responses;
 using Core.Entities.Users;
+using Core.Helpers;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 
@@ -10,12 +13,17 @@ public sealed class CreateNewUserRequestHandler : IRequestHandler<CreateNewUserR
 {
   private readonly UserManager<User> _userManager;
   private readonly RoleManager<IdentityRole> _roleManager;
+  private readonly IMapper _mapper;
+  private readonly Random _random;
 
   public CreateNewUserRequestHandler(UserManager<User> userManager,
-    RoleManager<IdentityRole> roleManager)
+    RoleManager<IdentityRole> roleManager,
+    IMapper mapper)
   {
     _userManager = userManager;
     _roleManager = roleManager;
+    _mapper = mapper;
+    _random = new Random();
   }
 
   public async Task<ActionResponse> Handle(CreateNewUserRequest request, CancellationToken cancellationToken)
@@ -33,13 +41,22 @@ public sealed class CreateNewUserRequestHandler : IRequestHandler<CreateNewUserR
 
     user = User.Create(request.Username, request.Email, request.Name, role.Name);
 
-    var result = await _userManager.CreateAsync(user, request.Password);
+    user.DepartmentId = request.DepartmentId;
+    user.LevelId = request.LevelId;
+    user.PositionId = request.PositionId;
+
+    var password = _random.Password();
+
+    var result = await _userManager.CreateAsync(user, password);
 
     if (!result.Succeeded)
       return new NotFoundResponse();
 
     await _userManager.AddToRoleAsync(user, role.Name);
 
-    return new SuccessResponse("Tạo user thành công", null);
+    var response = _mapper.Map<AddedEmployeeResponse>(user);
+    response.Role = response.Role;
+
+    return new SuccessResponse("Tạo user thành công", response);
   }
 }

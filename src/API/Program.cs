@@ -12,6 +12,10 @@ builder.Services.ConfigureCoreServices();
 
 builder.Services.ConfigureCors(builder.Configuration);
 
+builder.Services.ConfigureAuth();
+
+builder.Services.ConfigureEmailClient(builder.Configuration);
+
 builder.Services.AddControllers();
 
 builder.Services.AddScoped<IFileUpload, FileUpload>();

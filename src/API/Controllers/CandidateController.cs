@@ -19,8 +19,6 @@ public class CandidateController : ControllerBase
 	[Route("{id:int}")]
 	public async Task<IActionResult> UpdateCandidate([FromRoute] int id, [FromBody] UpdateCandidateRequest request)
 	{
-		request.Id = id;
-
 		var response = await _mediator.Send(request);
 
 		if(response.StatusCode == System.Net.HttpStatusCode.OK)

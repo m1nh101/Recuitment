@@ -3,12 +3,5 @@ using MediatR;
 
 namespace Core.CQRS.Recruitments.Requests;
 
-public class DeleteRecruitmentRequest : IRequest<ActionResponse>
-{
-	public DeleteRecruitmentRequest(int id)
-	{
-		Id = id;
-	}
-
-  public int Id { get; private set; }
-}
+public sealed record DeleteRecruitmentRequest(
+	int Id) : IRequest<ActionResponse>;

@@ -15,7 +15,7 @@ public partial class Booking
       MeetingUrl = meetingUrl,
       MeetingType = meetingType,
       ReviewerId = reviewerId,
-      Interview = interview
+      Interview = interview,
     };
   }
 

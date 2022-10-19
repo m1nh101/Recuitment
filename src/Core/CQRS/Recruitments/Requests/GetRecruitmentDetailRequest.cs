@@ -3,12 +3,5 @@ using MediatR;
 
 namespace Core.CQRS.Recruitments.Requests;
 
-public class GetRecruitmentDetailRequest : IRequest<ActionResponse>
-{
-	public GetRecruitmentDetailRequest(int id)
-	{
-		Id = id;
-	}
-
-  public int Id { get; private set; }
-}
+public sealed record GetRecruitmentDetailRequest (
+	int Id) : IRequest<ActionResponse>;

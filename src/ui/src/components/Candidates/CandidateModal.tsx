@@ -1,23 +1,22 @@
 import { Modal, UploadFile } from "antd"
 import { useForm } from "antd/es/form/Form"
-import { useDispatch } from "react-redux"
-import { CandidateRequestProps, postCandidateToRecruitment } from "../../apis/candidate"
+import { useSelector } from "react-redux"
+import { v4 } from "uuid"
+import { CandidateRequestProps, CandidateViewType, postCandidateToRecruitment } from "../../apis/candidate"
 import { fileUpload } from "../../apis/file"
 import { openSuccessNotification } from "../../App"
-import { convertCandidateToViewProp } from "../../helpers/candidates"
-import { addCandidate } from "../../store/recruitmentSlice"
-import { AppDispatch } from "../../store/store"
+import { getCurrentRecruitment } from "../../store/recruitmentSlice"
 import CandidateForm, { CandidateFormValue } from "./CandidateForm"
 
 interface CandidateModalProp {
   visible: boolean
   changeVisible: (state: boolean) => void
-  recruitmentId: number
+  appendTo: (data: CandidateViewType) => void
 }
 
 const CandidateModal: React.FC<CandidateModalProp> = ({...props}): JSX.Element => {
   const [form] = useForm()
-  const dispatch = useDispatch<AppDispatch>()
+  const currentRecruitment: number = useSelector(getCurrentRecruitment)
 
   const handleSubmit = async (value: CandidateFormValue): Promise<void> => {
     const files = form.getFieldValue('attachment') as UploadFile[]
@@ -25,12 +24,12 @@ const CandidateModal: React.FC<CandidateModalProp> = ({...props}): JSX.Element =
 
     const data: CandidateRequestProps = { ...value, ...{ attachment: url, gender: parseInt(value.gender)}}
 
-    postCandidateToRecruitment(props.recruitmentId, data)
+    postCandidateToRecruitment(currentRecruitment, data)
       .then(res => {
         if (res.statusCode == 200){
-          const viewItem = convertCandidateToViewProp(res.data!)
-          dispatch(addCandidate(viewItem))
-          props.changeVisible(false)
+          // const viewItem = { ...res.data!, key: v4()}
+          // props.appendTo(viewItem)
+          // props.changeVisible(false)
           form.resetFields()
           openSuccessNotification(res.message)
         }

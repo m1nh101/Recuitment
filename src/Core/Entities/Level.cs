@@ -10,4 +10,3 @@ public class Level : BaseEntity
   public virtual ICollection<InterviewResult>? Interviews { get; set; }
   public virtual ICollection<User>? Users { get; set; }
 }
-

@@ -12,12 +12,14 @@ public class Application : ModifyEntity
   {
     CandidateId = candidateId;
     Attachment = attachment;
+    Status = SharedKernel.Enums.Status.WaitBookingInterview;
   }
 
   public Application(Candidate candidate, string attachment)
   {
     Candidate = candidate;
     Attachment = attachment;
+    Status = SharedKernel.Enums.Status.WaitBookingInterview;
   }
 
   public int CandidateId { get; private set; }
@@ -31,10 +33,15 @@ public class Application : ModifyEntity
 
   public void UpdateAttachment(string attachment) => Attachment = attachment;
 
-  public void BookingInterview(Booking booking) => Booking = booking;
+  public void BookingInterview(Booking booking)
+  {
+    Booking = booking;
+    Status = SharedKernel.Enums.Status.BookedInterview;
+  }
   public void BookingInterview(Booking booking, int id)
   {
     Booking = booking;
     Booking.Id = id;
+    Status = SharedKernel.Enums.Status.BookedInterview;
   }
 }

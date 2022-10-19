@@ -1,12 +1,16 @@
 import { configureStore } from "@reduxjs/toolkit";
 import createSagaMiddleware, { SagaMiddleware } from "redux-saga";
+import employeeSlice from "./employeeSlice";
 import recruitmentSlice from "./recruitmentSlice";
+import utilSlice from "./utilSlice";
 
 const sagaMiddleware: SagaMiddleware<object> = createSagaMiddleware()
 
 const store = configureStore({
   reducer: {
-    recruitments: recruitmentSlice
+    recruitments: recruitmentSlice,
+    utils: utilSlice,
+    employees: employeeSlice
   }
 })
 

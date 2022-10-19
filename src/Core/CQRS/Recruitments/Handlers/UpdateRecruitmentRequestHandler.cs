@@ -2,6 +2,7 @@
 using Core.CQRS.Recruitments.Requests;
 using Core.CQRS.Recruitments.Responses;
 using Core.CQRS.Responses;
+using Core.Entities.Recruitments;
 using Core.Interfaces;
 using MediatR;
 
@@ -26,7 +27,9 @@ public class UpdateRecruitmentRequestHandler
     if (recruitment == null)
       return new NotFoundResponse();
 
-    recruitment.Update(request);
+    var payload = _mapper.Map<Recruitment>(request);
+
+    recruitment.Update(payload);
 
     _context.Recruitments.Update(recruitment);
     await _context.Commit();

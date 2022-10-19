@@ -1,17 +1,20 @@
 import { ExclamationCircleOutlined } from "@ant-design/icons"
 import { Button, Modal, Space, Table } from "antd"
 import { ColumnsType } from "antd/lib/table"
+import moment from "moment"
 import React from "react"
 import { useState } from "react"
+import { useSelector } from "react-redux"
 import { Link } from "react-router-dom"
-import { deleteCandidateFromRecruitment } from "../../apis/candidate"
-import { CandidateViewProp } from "../../helpers/candidates"
+import { v4 } from "uuid"
+import { CandidateInRecruitmentProps, deleteCandidateFromRecruitment, Status } from "../../apis/candidate"
+import { getCurrentRecruitment } from "../../store/recruitmentSlice"
 import NewBookingModal from "../Bookings/NewBookingModal"
 import UpdateCandidateModal from "./UpdateCandidateModal"
 
 interface ListCandidateProps {
-  source: Array<CandidateViewProp>,
-  recruitment?: string
+  source: Array<CandidateInRecruitmentProps>,
+  remove: (id: number) => void
 }
 
 const { confirm } = Modal
@@ -21,25 +24,47 @@ const ListCandidate: React.FC<ListCandidateProps> = ({...props}): JSX.Element =>
   
   const [visible, setVisible] = useState<boolean>(false)
   const [bookingVisible, setBookingVisible] = useState<boolean>(false)
+  const currentRecruitment: number = useSelector(getCurrentRecruitment)
 
-  const columns: ColumnsType<CandidateViewProp> = [
+  const actionRender = (data: CandidateInRecruitmentProps): JSX.Element => {
+    return (
+      <Space key={v4()}>
+        {
+          data.status === Status.BookedInterview && <Button type="primary">Chi tiết</Button>
+        }
+        {
+          data.status === Status.WaitBookingInterview && <Button type="primary" onClick={() => {setSelectCandidate(data.id!); setBookingVisible(true)}}>Tạo lịch phỏng vấn</Button>
+        }
+        {
+          data.status === Status.WaitBookingInterview && <Button type="primary" onClick={() => {setSelectCandidate(data.id!); setVisible(true)}}>Chỉnh sửa</Button>
+        }
+        {
+          data.status === Status.BookedInterview && <Button type="primary" danger>Huỷ</Button>
+        }
+      </Space>
+    )
+  }
+
+  const columns: ColumnsType<CandidateInRecruitmentProps> = [
     {
       title: 'Họ và Tên',
       dataIndex: 'name',
       key: 'name',
-      render: (_, data: CandidateViewProp) => {
+      render: (_, data: CandidateInRecruitmentProps) => {
         return <Link to="">{data.name}</Link>
       }
     },
     {
       title: 'Giới tính',
       dataIndex: 'gender',
-      key: 'gender'
+      key: 'gender',
+      render: (value: number) => <p>{value == 0 ? "Nam": "Nữ"}</p>
     },
     {
       title: 'Ngày sinh',
       dataIndex: 'birthday',
-      key: 'birthday'
+      key: 'birthday',
+      render: (value: string) => <p>{moment(value).format("DD/MM/YYYY")}</p>
     },
     {
       title: 'Email',
@@ -57,16 +82,10 @@ const ListCandidate: React.FC<ListCandidateProps> = ({...props}): JSX.Element =>
       key: 'address'
     },
     {
-      title: '',
+      title: 'Hành động',
       dataIndex: '',
       key: 'action',
-      render: (_, data: CandidateViewProp) => {
-        return (<Space>
-          <Button type="primary" onClick={() => setBookingVisible(true)}>Tạo lịch phỏng vấn</Button>
-          <Button type="primary" onClick={() => {setSelectCandidate(data.id); setVisible(true)}}>Chỉnh sửa</Button>
-          <Button onClick={() => showConfirm(data.id)} type="primary" danger>Xoá</Button>
-        </Space>)
-      }
+      render: (_, data: CandidateInRecruitmentProps) => actionRender(data)
     }
   ]
 
@@ -75,7 +94,12 @@ const ListCandidate: React.FC<ListCandidateProps> = ({...props}): JSX.Element =>
       title: 'Bạn có chắc muốn xoá ứng viên khỏi đơn tuyển dụng này?',
       icon: <ExclamationCircleOutlined />,
       onOk() {
-        deleteCandidateFromRecruitment(props.recruitment!, id.toString())
+        deleteCandidateFromRecruitment(currentRecruitment, id)
+          .then(res => {
+          if(res){
+            props.remove(id)
+          }
+        })
       }
     });
   };
@@ -87,13 +111,12 @@ const ListCandidate: React.FC<ListCandidateProps> = ({...props}): JSX.Element =>
       <UpdateCandidateModal
         visible={visible}
         changeVisible={setVisible}
-        recruitmentId={parseInt(props.recruitment!)}
+        recruitmentId={currentRecruitment}
         candidateId={selectCandidate} />
 
       <NewBookingModal
         visible={bookingVisible}
         changeVisible={setBookingVisible}
-        recruitmentId={parseInt(props.recruitment!)}
         candidate={selectCandidate} />
     </>
   )

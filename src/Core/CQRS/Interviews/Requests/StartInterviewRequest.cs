@@ -3,7 +3,6 @@ using MediatR;
 
 namespace Core.CQRS.Interviews.Requests;
 
-public class StartInterviewRequest : IRequest<ActionResponse>
-{
-  
-}
+public sealed record StartInterviewRequest(
+  int ApplicationId
+) : IRequest<ActionResponse>;

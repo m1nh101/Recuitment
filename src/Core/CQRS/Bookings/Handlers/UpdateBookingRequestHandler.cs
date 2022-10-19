@@ -26,19 +26,22 @@ public class UpdateBookingRequestHandler : IRequestHandler<UpdateBookingRequest,
     var application = await _context.Applications
       .Include(e => e.Booking)
       .ThenInclude(e => e!.Interview)
-      .FirstOrDefaultAsync(e => e.Id == request.ApplicationId, cancellationToken);
+      .FirstOrDefaultAsync(e => e.Id == request.Payload.ApplicationId, cancellationToken);
 
     if (application == null)
       return new NotFoundResponse();
 
-    var booking = Booking.Create(request.Date, request.Note, request.Place, 
-      request.MeetingUrl, request.MeetingType, request.ReviewerId, null);
+    //var booking = Booking.Create(request.Date, request.Note, request.Place, 
+    //  request.MeetingUrl, request.MeetingType, request.ReviewerId, null);
+
+    var booking = Booking.Create(request.Payload.Date, request.Payload.Note, "Office",
+      "None", SharedKernel.Enums.MeetingType.Offline, request.Payload.ReviewerId, null);
 
     var bookingId = application.Booking!.Id;
 
     application.BookingInterview(booking, bookingId);
 
-    application.Booking!.Interview!.ChangeTime(request.Start, request.End);
+    application.Booking!.Interview!.ChangeTime(request.Payload.Start, request.Payload.End);
 
     _context.Applications.Update(application);
 

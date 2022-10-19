@@ -7,6 +7,17 @@ import { ContactsOutlined, ReconciliationOutlined } from "@ant-design/icons"
 import './admin.css'
 import { adminRoute } from "../routes"
 import Recruitment from "../pages/Recruitment"
+import { useDispatch } from "react-redux"
+import { AppDispatch } from "../store/store"
+import { useEffect } from "react"
+import { getRoles } from "../apis/role"
+import { appendDepartments, appendLevels, appendPositions, appendRoles } from "../store/utilSlice"
+import { getDepartments } from "../apis/department"
+import { getPositions } from "../apis/position"
+import { getLevels } from "../apis/level"
+import { appendEmployees, getEmployees } from "../store/employeeSlice"
+import { loadUsers } from "../apis/employee"
+import { convertEmployeeToView, EmployeeViewProps } from "../helpers/employee"
 
 
 const createRoute = (): JSX.Element => {
@@ -45,6 +56,47 @@ const sidebarMenu: Array<ItemType> = [
 
 
 const Admin: React.FC = (): JSX.Element => {
+  const dispatch = useDispatch<AppDispatch>()
+
+  useEffect(() => {
+    getRoles()
+      .then(res => {
+        if(res.statusCode === 200){
+          dispatch(appendRoles(res.data!))
+        }
+      })
+
+    getDepartments()
+      .then(res => {
+        if(res.statusCode === 200){
+          dispatch(appendDepartments(res.data!))
+        }
+      })
+
+    getPositions()
+      .then(res => {
+        if(res.statusCode === 200){
+          dispatch(appendPositions(res.data!))
+        }
+      })
+
+    getLevels()
+      .then(res => {
+        if(res.statusCode === 200){
+          dispatch(appendLevels(res.data!))
+        }
+      })
+
+    loadUsers()
+      .then(res => {
+        if(res.statusCode === 200){
+          const data = res.data!.map(item => convertEmployeeToView(item))
+          dispatch(appendEmployees(data))
+        }
+      })
+
+  }, [])
+
   return(
     <Layout>
       <Header className="sticky_header header__container">
@@ -75,4 +127,4 @@ const Admin: React.FC = (): JSX.Element => {
   )
 }
 
-export default Admin;
+export default Admin

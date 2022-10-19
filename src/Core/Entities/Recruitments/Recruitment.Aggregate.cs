@@ -1,5 +1,4 @@
-﻿using Core.CQRS.Recruitments.Requests;
-using Core.Entities.Candidates;
+﻿using Core.Entities.Candidates;
 
 namespace Core.Entities.Recruitments;
 
@@ -8,7 +7,7 @@ public partial class Recruitment
   private readonly List<Application> _applications = new();
   public IReadOnlyCollection<Application> Applications => _applications.AsReadOnly();
 
-  public void Update(UpdateRecruitmentRequest request)
+  public void Update(Recruitment request)
   {
     Name = request.Name;
     Benifit = request.Benifit;

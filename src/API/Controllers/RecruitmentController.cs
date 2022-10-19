@@ -53,7 +53,6 @@ public class RecruitmentController : ControllerBase
 	public async Task<IActionResult> PatchRecruitment([FromRoute] int id,
 		[FromBody] UpdateRecruitmentRequest request)
 	{
-		request.Id = id;
     var response = await _mediator.Send(request);
 
 		if (response.StatusCode == System.Net.HttpStatusCode.OK)
@@ -93,7 +92,6 @@ public class RecruitmentController : ControllerBase
 	public async Task<IActionResult> AddCandidate([FromRoute] int id,
 		[FromBody] AddCandidateToRecruitmentRequest request)
 	{
-		request.RecruitmentId = id;
 		var response = await _mediator.Send(request);
 
 		if (response.StatusCode == System.Net.HttpStatusCode.OK)
@@ -111,7 +109,6 @@ public class RecruitmentController : ControllerBase
 		if (candidateId != request.Id)
 			return BadRequest();
 
-		request.RecruitmentId = id;
 		var response = await _mediator.Send(request);
 
 		if (response.StatusCode == System.Net.HttpStatusCode.OK)
@@ -124,11 +121,7 @@ public class RecruitmentController : ControllerBase
 	[Route("{id:int}/candidates/{candidateId:int}")]
 	public async Task<IActionResult> RemoveCandidate([FromRoute] int id, [FromRoute] int candidateId)
 	{
-		var request = new DeleteCandidateFromRecruitmentRequest
-		{
-			CandidateId = candidateId,
-			RecruitmentId = id
-		};
+		var request = new DeleteCandidateFromRecruitmentRequest(id, candidateId);
 
 		var response = await _mediator.Send(request);
 

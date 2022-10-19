@@ -30,9 +30,13 @@ public class CreateBookingRequestHandler : IRequestHandler<CreateNewBookingReque
 
     var interview = Interview.Setup(request.Start, request.End);
 
-    var booking = Booking.Create(request.Date, request.Note,
-      request.Place, request.MeetingUrl, 
-      request.MeetingType, request.ReviewerId, interview);
+    var booking = Booking.Create(request.Date, "none",
+      "Office", "none", 
+      SharedKernel.Enums.MeetingType.Offline, request.ReviewerId, interview);
+
+    //var booking = Booking.Create(request.Date, request.Note,
+    //  request.Place, request.MeetingUrl,
+    //  request.MeetingType, request.ReviewerId, interview);
 
     application.BookingInterview(booking);
 

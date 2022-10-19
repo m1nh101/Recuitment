@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Core.CQRS.Candidates.Handlers;
 
-public class AddCandidateToRecruitmentRequestHandler
+public sealed class AddCandidateToRecruitmentRequestHandler
   : IRequestHandler<AddCandidateToRecruitmentRequest, ActionResponse>
 {
   private readonly IMapper _mapper;
@@ -41,14 +41,13 @@ public class AddCandidateToRecruitmentRequestHandler
     {
       var source = Candidate.Create(request);
       _candidate!.Update(source);
-
-      recruitment.CreateNewApplication(_candidate, "");
     } else
       _candidate = Candidate.Create(request);
 
-    // recruitment.CreateNewApplication(candidate, request.Attachment);
-    recruitment.CreateNewApplication(_candidate, "");
+    recruitment.CreateNewApplication(_candidate, request.Attachment);
+
     _context.Recruitments.Update(recruitment);
+
     await _context.Commit();
 
     var response = _mapper.Map<CandidateDetailResponse>(_candidate);

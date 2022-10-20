@@ -59,4 +59,13 @@ public class ApplicationController : ControllerBase
 
     return Ok(response);
   }
+
+  [HttpGet]
+  public async Task<IActionResult> GetInterviewByReviewer()
+  {
+    var request = new GetInterviewByReviewerRequest();
+    var response = await _mediator.Send(request);
+
+    return Ok(request);
+  }
 }

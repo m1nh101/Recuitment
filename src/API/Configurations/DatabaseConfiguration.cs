@@ -43,7 +43,7 @@ public static class DatabaseConfiguration
       .MigrateLevel()
       .MigratePosition()
       .MigrateDepartment()
-    .MigrateRole(roleManager)
+      .MigrateRole(roleManager)
       .MigrateSystemUser(userManager, configuration);
   }
   private static void DockerMigrate(IServiceCollection services, IConfiguration configuration, AppDbContext context)

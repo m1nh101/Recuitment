@@ -114,7 +114,7 @@ public class DefaultDataMigration
 
 			if (string.IsNullOrEmpty(username))
 				username = "admin";
-
+				
 			if (string.IsNullOrEmpty(password))
 				password = "ROOT@syst3m";
 

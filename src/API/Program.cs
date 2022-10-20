@@ -1,6 +1,8 @@
 using API.Configurations;
 using API.Helpers;
 using Core;
+using Core.Helpers;
+using Core.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,9 +18,17 @@ builder.Services.ConfigureAuth();
 
 builder.Services.ConfigureEmailClient(builder.Configuration);
 
+builder.Services.ConfigureCookie();
+
 builder.Services.AddControllers();
 
+builder.Services.AddHttpContextAccessor();
+
 builder.Services.AddScoped<IFileUpload, FileUpload>();
+
+builder.Services.AddScoped<ICurrentUser, CurrentUser>();
+
+builder.Services.AddScoped<JwtHelper>();
 
 builder.Services.AddSwaggerGen();
 
@@ -41,6 +51,10 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseCors("cors");
+
+app.UseCookiePolicy();
+
+app.UseAuthentication();
 
 app.UseStaticFiles();
 

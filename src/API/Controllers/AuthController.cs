@@ -1,4 +1,6 @@
 ﻿using Core.CQRS.Auth.Requests;
+using Core.Entities.Users;
+using Core.Helpers;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,10 +11,12 @@ namespace API.Controllers;
 public class AuthController : ControllerBase
 {
   private readonly IMediator _mediator;
+	private readonly JwtHelper _jwt;
 
-	public AuthController(IMediator mediator)
+	public AuthController(IMediator mediator, JwtHelper jwt)
 	{
 		_mediator = mediator;
+		_jwt = jwt;
 	}
 
 	[HttpGet]
@@ -34,5 +38,32 @@ public class AuthController : ControllerBase
 			return Ok(response);
 
 		return BadRequest(response);
+	}
+
+	[HttpPost]
+	public async Task<IActionResult> Login([FromBody] LoginRequest request)
+	{
+		var response = await _mediator.Send(request);
+
+		if(response.StatusCode == System.Net.HttpStatusCode.BadGateway)
+			return BadRequest(response);
+
+		var user = (User)response.Data!;
+
+		_jwt.SetUser(user);
+
+		var token = await _jwt.GenerateJwtToken();
+
+		Response.Cookies.Append("token", token, new CookieOptions {
+			HttpOnly = true,
+			SameSite = SameSiteMode.None,
+			Secure = true
+		});
+
+		return Ok(new
+		{
+			user.Name,
+			user.Email
+		});
 	}
 }

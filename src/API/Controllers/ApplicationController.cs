@@ -1,4 +1,6 @@
 using Core.CQRS.Bookings.Requests;
+using Core.CQRS.Interviews;
+using Core.CQRS.Interviews.Finnish;
 using Core.CQRS.Interviews.Requests;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;

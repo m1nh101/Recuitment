@@ -1,5 +1,4 @@
-﻿using Core.CQRS.Candidates.Requests;
-using SharedKernel.Bases;
+﻿using SharedKernel.Bases;
 using SharedKernel.Enums;
 
 namespace Core.Entities.Candidates;

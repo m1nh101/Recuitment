@@ -1,5 +1,6 @@
-﻿using Core.CQRS.Candidates.Requests;
-using Core.CQRS.Recruitments.Requests;
+﻿using Core.CQRS.Recruitments.Create;
+using Core.CQRS.Recruitments.Query;
+using Core.CQRS.Recruitments.Update;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,7 +20,7 @@ public class RecruitmentController : ControllerBase
 	[HttpGet]
 	public async Task<IActionResult> GetRecruitments()
 	{
-		var request = new GetAllRecruitmentsRequest();
+		var request = new GetAllRecruitmentRequest();
 		var response = await _mediator.Send(request);
 		return Ok(response);
 	}
@@ -38,7 +39,7 @@ public class RecruitmentController : ControllerBase
   }
 
   [HttpPost]
-	public async Task<IActionResult> PostRecruitment([FromBody] CreateNewRecruitmentRequest request)
+	public async Task<IActionResult> PostRecruitment([FromBody] CreateRecruitmentRequest request)
 	{
 		var response = await _mediator.Send(request);
 
@@ -61,73 +62,73 @@ public class RecruitmentController : ControllerBase
 		return NotFound(response);
 	}
 
-	[HttpDelete]
-	[Route("{id:int}")]
-	public async Task<IActionResult> DeleteRecruitment([FromRoute] int id)
-	{
-		var request = new DeleteRecruitmentRequest(id);
-    var response = await _mediator.Send(request);
+	// [HttpDelete]
+	// [Route("{id:int}")]
+	// public async Task<IActionResult> DeleteRecruitment([FromRoute] int id)
+	// {
+	// 	var request = new DeleteRecruitmentRequest(id);
+  //   var response = await _mediator.Send(request);
 
-    if (response.StatusCode == System.Net.HttpStatusCode.OK)
-      return Ok(response);
+  //   if (response.StatusCode == System.Net.HttpStatusCode.OK)
+  //     return Ok(response);
 
-    return NotFound(response);
-  }
+  //   return NotFound(response);
+  // }
 
-	[HttpGet]
-	[Route("{id:int}/candidates/{candidateId:int}")]
-	public async Task<IActionResult> GetCandidateFromRecruitment([FromRoute] int id, [FromRoute] int candidateId)
-	{
-		var request = new GetCandidateDetailRequest(candidateId, id);
-		var response = await _mediator.Send(request);
+	// [HttpGet]
+	// [Route("{id:int}/candidates/{candidateId:int}")]
+	// public async Task<IActionResult> GetCandidateFromRecruitment([FromRoute] int id, [FromRoute] int candidateId)
+	// {
+	// 	var request = new GetCandidateDetailRequest(candidateId, id);
+	// 	var response = await _mediator.Send(request);
 
-		if (response.StatusCode == System.Net.HttpStatusCode.OK)
-			return Ok(response);
+	// 	if (response.StatusCode == System.Net.HttpStatusCode.OK)
+	// 		return Ok(response);
 
-		return BadRequest(response);
-	}
+	// 	return BadRequest(response);
+	// }
 	
-	[HttpPost]
-	[Route("{id:int}/candidates")]
-	public async Task<IActionResult> AddCandidate([FromRoute] int id,
-		[FromBody] AddCandidateToRecruitmentRequest request)
-	{
-		var response = await _mediator.Send(request);
+	// [HttpPost]
+	// [Route("{id:int}/candidates")]
+	// public async Task<IActionResult> AddCandidate([FromRoute] int id,
+	// 	[FromBody]  request)
+	// {
+	// 	var response = await _mediator.Send(request);
 
-		if (response.StatusCode == System.Net.HttpStatusCode.OK)
-			return Ok(response);
+	// 	if (response.StatusCode == System.Net.HttpStatusCode.OK)
+	// 		return Ok(response);
 
-		return BadRequest(response);
-	}
+	// 	return BadRequest(response);
+	// }
 
-	[HttpPatch]
-	[Route("{id:int}/candidates/{candidateId:int}")]
-	public async Task<IActionResult> UpdateCandidateFromRecruitment([FromRoute] int id,
-		[FromRoute] int candidateId,
-		[FromBody] UpdateCandidateRequest request)
-	{
-		if (candidateId != request.Id)
-			return BadRequest();
+	// [HttpPatch]
+	// [Route("{id:int}/candidates/{candidateId:int}")]
+	// public async Task<IActionResult> UpdateCandidateFromRecruitment([FromRoute] int id,
+	// 	[FromRoute] int candidateId,
+	// 	[FromBody] UpdateCandidateRequest request)
+	// {
+	// 	if (candidateId != request.Id)
+	// 		return BadRequest();
 
-		var response = await _mediator.Send(request);
+	// 	var response = await _mediator.Send(request);
 
-		if (response.StatusCode == System.Net.HttpStatusCode.OK)
-			return Ok(response);
+	// 	if (response.StatusCode == System.Net.HttpStatusCode.OK)
+	// 		return Ok(response);
 
-		return BadRequest(response);
-	}
+	// 	return BadRequest(response);
+	// }
 
-	[HttpDelete]
-	[Route("{id:int}/candidates/{candidateId:int}")]
-	public async Task<IActionResult> RemoveCandidate([FromRoute] int id, [FromRoute] int candidateId)
-	{
-		var request = new DeleteCandidateFromRecruitmentRequest(id, candidateId);
+	// [HttpDelete]
+	// [Route("{id:int}/candidates/{candidateId:int}")]
+	// public async Task<IActionResult> RemoveCandidate([FromRoute] int id, [FromRoute] int candidateId)
+	// {
+	// 	var request = new DeleteCandidateFromRecruitmentRequest(id, candidateId);
 
-		var response = await _mediator.Send(request);
+	// 	var response = await _mediator.Send(request);
 
-		if (response.StatusCode == System.Net.HttpStatusCode.OK)
-			return Ok(response);
+	// 	if (response.StatusCode == System.Net.HttpStatusCode.OK)
+	// 		return Ok(response);
 
-		return BadRequest(response);
-	}
+	// 	return BadRequest(response);
+	// }
 }

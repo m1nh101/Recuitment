@@ -13,7 +13,6 @@ public class Interview : ModifyEntity
   {
     StartTime = start;
     EndTime = end;
-    
   }
 
   public DateTime JoinStartTime { get; private set; }
@@ -34,7 +33,7 @@ public class Interview : ModifyEntity
     };
   }
 
-  public void ChangeTime(DateTime start, DateTime end)
+  public Interview ChangeTime(DateTime start, DateTime end)
   {
     int compareStartToEndTime = start.CompareTo(end);
 
@@ -46,6 +45,8 @@ public class Interview : ModifyEntity
 
     StartTime = start;
     EndTime = end;
+
+    return this;
   }
 
   public void Start()

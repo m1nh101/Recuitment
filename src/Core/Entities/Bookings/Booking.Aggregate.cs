@@ -20,4 +20,15 @@ public partial class Booking
   }
 
   public void Cancel() => Status = Status.Cancel;
+
+  public Booking Update(DateTime date,  string reviewerId, DateTime start, DateTime end)
+  {
+    Date = date;
+    ReviewerId = reviewerId;
+
+    if(Interview != null)
+      Interview.ChangeTime(start, end);
+
+    return this;
+  }
 }

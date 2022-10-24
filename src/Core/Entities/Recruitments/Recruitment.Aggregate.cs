@@ -22,21 +22,12 @@ public partial class Recruitment
     PositionId = request.PositionId;
   }
 
-  public void CreateNewApplication(Candidate candidate, string attachment)
+  public Application CreateNewApplication(Candidate candidate, string attachment)
   {
     var application = new Application(candidate, attachment);
     _applications.Add(application);
-  }
 
-  public void CreateApplicationFromExistCandidateBefore(int candidateId, string attachment)
-  {
-    var isValidCandidate = _applications.Any(e => e.CandidateId == candidateId);
-
-    if (!isValidCandidate)
-      return;
-
-    var application = new Application(candidateId, attachment);
-    _applications.Add(application);
+    return application;
   }
 
   public void RemoveApplication(int id)

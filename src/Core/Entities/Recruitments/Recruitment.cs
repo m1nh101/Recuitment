@@ -1,5 +1,4 @@
-﻿using Core.CQRS.Recruitments.Requests;
-using SharedKernel.Bases;
+﻿using SharedKernel.Bases;
 
 namespace Core.Entities.Recruitments;
 
@@ -41,23 +40,4 @@ public partial class Recruitment : ModifyEntity
   public virtual Department? Department { get; set; }
   public virtual Position? Position { get; set; }
   public virtual ICollection<RecruitSkillTag>? SkillTags { get; set; }
-
-  public static Recruitment Create(CreateNewRecruitmentRequest request)
-  {
-    return new Recruitment
-    {
-      Name = request.Name,
-      Content = request.Content,
-      Benifit = request.Benifit,
-      StartDate = request.StartDate,
-      EndDate = request.EndDate,
-      ExperienceFrom = request.ExperienceFrom,
-      ExperienceTo = request.ExperienceTo,
-      SalaryMax = request.SalaryMax,
-      SalaryMin = request.SalaryMin,
-      Number = request.Number,
-      PositionId = request.PositionId,
-      DepartmentId = request.DepartmentId
-    };
-  }
 }

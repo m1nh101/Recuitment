@@ -1,4 +1,7 @@
-using Core.CQRS.Bookings.Requests;
+using Core.CQRS.Bookings.BookingInterview;
+using Core.CQRS.Bookings.Cancel;
+using Core.CQRS.Interviews;
+using Core.CQRS.Interviews.Finnish;
 using Core.CQRS.Interviews.Requests;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -18,7 +21,7 @@ public class ApplicationController : ControllerBase
 
   [HttpPost]
   [Route("{id:int}/booking")]
-	public async Task<IActionResult> CreateBooking([FromRoute] int id, [FromBody] CreateNewBookingRequest request)
+	public async Task<IActionResult> CreateBooking([FromRoute] int id, [FromBody] BookingAnInterviewRequest request)
 	{
 		var response = await _mediator.Send(request);
 
@@ -32,7 +35,7 @@ public class ApplicationController : ControllerBase
   [Route("{id:int}/booking")]
   public async Task<IActionResult> CancelInterview([FromRoute] int id)
   {
-    var request = new CancelBookingInterviewRequest(id);
+    var request = new CancelBookingRequest(id);
     var response = await _mediator.Send(request);
     return Ok(response);
   }

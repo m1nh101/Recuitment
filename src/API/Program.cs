@@ -14,7 +14,7 @@ builder.Services.ConfigureCoreServices();
 
 builder.Services.ConfigureCors(builder.Configuration);
 
-builder.Services.ConfigureAuth();
+builder.Services.ConfigureAuth(builder.Configuration);
 
 builder.Services.ConfigureEmailClient(builder.Configuration);
 

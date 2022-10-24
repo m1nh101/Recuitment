@@ -1,5 +1,5 @@
-﻿using Core.CQRS.Candidates.Requests;
-using Core.Entities.Recruitments;
+﻿using Core.Entities.Recruitments;
+using SharedKernel.Enums;
 
 namespace Core.Entities.Candidates;
 
@@ -8,18 +8,19 @@ public partial class Candidate
   private readonly List<Application> _applications = new();
   public IReadOnlyCollection<Application> Applications => _applications.AsReadOnly();
 
-  public static Candidate Create(AddCandidateToRecruitmentRequest request)
+  public static Candidate Create(string name, string email, string phone, DateTime birthday,
+    string address, string qualification, Gender gender, string? note)
   {
     return new Candidate
     {
-      Name = request.Name,
-      Birthday = request.Birthday,
-      Phone = request.Phone,
-      Email = request.Email,
-      Note = request.Note,
-      Address = request.Address,
-      Gender = request.Gender,
-      Qualification = request.Qualification,
+      Name = name,
+      Birthday = birthday,
+      Phone = phone,
+      Email = email,
+      Note = note ?? string.Empty,
+      Address = address,
+      Gender = gender,
+      Qualification = qualification,
     };
   }
 

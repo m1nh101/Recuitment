@@ -8,33 +8,35 @@ namespace Core.CQRS.Recruitments.Query;
 public sealed class GetRecruitmentDetailRequestHandler
   : IRequestHandler<GetRecruitmentDetailRequest, ActionResponse>
 {
-    private readonly IAppDbContext _context;
+  private readonly IAppDbContext _context;
 
-    public GetRecruitmentDetailRequestHandler(IAppDbContext context)
-    {
-        _context = context;
-    }
+  public GetRecruitmentDetailRequestHandler(IAppDbContext context)
+  {
+    _context = context;
+  }
 
-    public async Task<ActionResponse> Handle(GetRecruitmentDetailRequest request, CancellationToken cancellationToken)
-    {
-      var recruitment = await _context.Recruitments
+  public Task<ActionResponse> Handle(GetRecruitmentDetailRequest request, CancellationToken cancellationToken)
+  {
+    var recruitments = _context.Recruitments
+      .Include(e => e.Applications)
+      .ThenInclude(e => e.Candidate)
+      .Select(e => new RecruitmentDetailResponse(
+        e.Id, e.Name, e.Content, e.Benifit,
+        e.SalaryMin, e.SalaryMax, e.ExperienceFrom, e.ExperienceTo,
+        e.Number, e.StartDate, e.EndDate, e.PositionId, e.DepartmentId, e.Applications
+          .Select(d => new ApplicationAppliedInRecruitment(
+            d.Id, d.Candidate!.Name, d.Candidate!.Gender, d.Candidate!.Email,
+            d.Candidate!.Phone, d.Candidate!.Address, d.Status
+          ))
+      ))
         .AsNoTracking()
-        .Include(e => e.Applications)
-        .ThenInclude(e => e.Candidate)
-        .Select(e => new RecruitmentDetailResponse(
-          e.Id, e.Name, e.Content, e.Benifit, 
-          e.SalaryMin, e.SalaryMax, e.ExperienceFrom, e.ExperienceTo,
-          e.Number, e.Applications
-            .Select(d => new ApplicationAppliedInRecruitment(
-              d.Id, d.Candidate!.Name, d.Candidate!.Gender, d.Candidate!.Email,
-              d.Candidate!.Phone
-            ))
-        ))
-        .FirstOrDefaultAsync(e => e.Id == request.Id);
+        .AsEnumerable();
 
-      if(recruitment == null)
-        return new NotFoundResponse();
+    var recruitment = recruitments.FirstOrDefault(e => e.Id == request.Id);
 
-      return new SuccessResponse("Thành công", recruitment);
-    }
+    ActionResponse response = recruitment == null ? new NotFoundResponse()
+      : new SuccessResponse("Thành công", recruitment);
+
+    return Task.FromResult(response);
+  }
 }

@@ -30,6 +30,8 @@ builder.Services.AddScoped<ICurrentUser, CurrentUser>();
 
 builder.Services.AddScoped<JwtHelper>();
 
+builder.Services.AddScoped<Util>();
+
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();

@@ -6,6 +6,7 @@ namespace Core.CQRS.Applications.Apply;
 
 public sealed record ApplyToRecruitmentRequest(
   int Id,
+  int RecruitmentId,
   string Name,
   string Phone,
   string Email,

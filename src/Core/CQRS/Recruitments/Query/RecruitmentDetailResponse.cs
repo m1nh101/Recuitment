@@ -5,10 +5,14 @@ public record RecruitmentDetailResponse(
   string Name,
   string Content,
   string Benifit,
-  int SalaryMinx,
+  int SalaryMin,
   int SalaryMax,
   int ExperienceFrom,
   int ExperienceTo,
   int Number,
+  DateTime StartDate,
+  DateTime EndDate,
+  int PositionId,
+  int DepartmentId,
   IEnumerable<ApplicationAppliedInRecruitment> Applications
 );

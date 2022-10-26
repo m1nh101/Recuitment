@@ -21,12 +21,14 @@ public sealed class GetAllReviewerRequestHandler : IRequestHandler<GetAllReviewe
   {
     var query = _userManager.Users
       .Include(e => e.Department)
+      .Where(e => e.Role == "Leader" || e.Role == "Senior")
       .Select(e => new ListReviewerResponse
       {
         Id = e.Id,
         Name = e.Name,
         Department = e.Department!.Name
-      });
+      })
+      .AsNoTracking();
 
     var response = new SuccessResponse("Thành công", query);
 

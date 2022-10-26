@@ -6,15 +6,14 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { v4 } from "uuid";
-import { CandidateViewType } from "../../apis/candidate";
+import { ApplicationViewType } from "../../apis/application";
 import { getRecruitmentDetail, patchRecruitment } from "../../apis/recruitment";
 import { openSuccessNotification } from "../../App";
-import { CandidateViewProp } from "../../helpers/candidates";
 import { convertFormDataToObject, convertRecruitmentDetailValueToForm } from "../../helpers/recruitment";
 import { selectRecruitment } from "../../store/recruitmentSlice";
 import { AppDispatch } from "../../store/store";
-import CandidateModal from "../Candidates/CandidateModal";
-import ListCandidate from "../Candidates/ListCandidate";
+import CandidateModal from "../Application/ApplicationModal";
+import ListCandidate from "../Application/ListApplication";
 import { RecruitmentFormValueProps } from "./NewRecruitment";
 import RecruitmentForm from "./RecruitmentForm";
 
@@ -22,7 +21,7 @@ const { Title } = Typography
 const { Panel } = Collapse
 
 const RecruitmentDetail: React.FC = (): JSX.Element => {
-  const [candidates, setCandidates] = useState<Array<CandidateViewType>>([])
+  const [candidates, setCandidates] = useState<Array<ApplicationViewType>>([])
   const [formValue, setFormValue] = useState<Store>({})
   const dispatch = useDispatch<AppDispatch>()
   const [modal, setModal] = useState<boolean>(false)
@@ -30,12 +29,11 @@ const RecruitmentDetail: React.FC = (): JSX.Element => {
   const [form] = useForm()
   const navigate = useNavigate()
   
-  
   const openModal = () => {
     setModal(true)
   }
 
-  const appendToCandidateList = (data: CandidateViewType): void => {
+  const appendToCandidateList = (data: ApplicationViewType): void => {
     // setCandidates([...candidates, data])
   }
 
@@ -48,7 +46,8 @@ const RecruitmentDetail: React.FC = (): JSX.Element => {
   }
 
   const handleSubmit = (value: RecruitmentFormValueProps): void => {
-    const data = convertFormDataToObject(value)
+    const data = convertFormDataToObject(parseInt(id!), value)
+    console.log(data)
     patchRecruitment(id!, data).then(res => {
       if(res.statusCode === 200){
         openSuccessNotification("Lưu thay đổi thành công")
@@ -58,13 +57,12 @@ const RecruitmentDetail: React.FC = (): JSX.Element => {
 
   useEffect(() => {
     getRecruitmentDetail(id!).then(res => {
-      const sources = res.data!.candidates.map(item => {
+      const sources = res.data!.applications.map(item => {
         return {
           ...item, key: v4()
         }
       })
-
-      console.log(sources)
+      console.log(res.data)
       setCandidates(sources)
       setFormValue(convertRecruitmentDetailValueToForm(res.data!))
     })

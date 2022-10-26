@@ -4,8 +4,10 @@ namespace Core.CQRS.Recruitments.Query;
 
 public record ApplicationAppliedInRecruitment(
   int Id,
-  string CandidateName,
+  string Name,
   Gender Gender,
   string Email,
-  string PhoneNumber
+  string Phone,
+  string Address,
+  Status Status
 );

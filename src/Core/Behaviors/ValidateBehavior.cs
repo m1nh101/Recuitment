@@ -39,6 +39,9 @@ public class ValidateBehavior<TRequest, TReponse>
       errors.AddRange(error);
     }
 
+    if (errors.Count == 0)
+      return await next();
+
     var response = new FailedValidationResponse(errors);
 
     return (dynamic) response;

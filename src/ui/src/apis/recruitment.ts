@@ -1,5 +1,5 @@
 import { Moment } from "moment"
-import { CandidateInRecruitmentProps } from "./candidate"
+import { ApplicationInRecruitmentProps } from "./application"
 import client, { Response } from "./client"
 
 export interface GeneralRecruitmentProps{
@@ -22,7 +22,7 @@ export type RecruitmentRequest = GeneralRecruitmentProps & {
 }
 
 export interface RecruitmentDetailProps extends RecruitmentRequest {
-  candidates: Array<CandidateInRecruitmentProps>
+  applications: Array<ApplicationInRecruitmentProps>
 }
 
 type RecruitmentsResponse = Response<Array<GeneralRecruitmentProps>>

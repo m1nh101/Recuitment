@@ -12,15 +12,15 @@ public sealed class UpdateRecruitmentRequestHandler
   private readonly IAppDbContext _context;
   private readonly IMapper _mapper;
 
-    public UpdateRecruitmentRequestHandler(IAppDbContext context, IMapper mapper)
-    {
-        _context = context;
-        _mapper = mapper;
-    }
+  public UpdateRecruitmentRequestHandler(IAppDbContext context, IMapper mapper)
+  {
+    _context = context;
+    _mapper = mapper;
+  }
 
-    public async Task<ActionResponse> Handle(UpdateRecruitmentRequest request, CancellationToken cancellationToken)
-    {
-        var recruitment = await _context.Recruitments.FindAsync(request.Id);
+  public async Task<ActionResponse> Handle(UpdateRecruitmentRequest request, CancellationToken cancellationToken)
+  {
+    var recruitment = await _context.Recruitments.FindAsync(request.Id);
 
     if (recruitment == null)
       return new NotFoundResponse();
@@ -35,5 +35,5 @@ public sealed class UpdateRecruitmentRequestHandler
     var response = _mapper.Map<UpdateRecruitmentResponse>(recruitment);
 
     return new SuccessResponse("Thành công", response);
-    }
+  }
 }

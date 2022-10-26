@@ -42,8 +42,9 @@ export const convertGeneralRecruitmentDataToViewData = (source: GeneralRecruitme
   }
 }
 
-export const convertFormDataToObject = (source: RecruitmentFormValueProps): RecruitmentRequest => {
+export const convertFormDataToObject = (id: number, source: RecruitmentFormValueProps): RecruitmentRequest => {
   return {
+    id: id,
     name: source.name,
     content: source.content,
     benifit: source.benifit,

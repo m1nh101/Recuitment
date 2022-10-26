@@ -41,7 +41,7 @@ const NewRecruitment: React.FC<NewRecruitmnetModalProp> = ({...props}): JSX.Elem
   }
 
   const handleSubmit = (value: RecruitmentFormValueProps): void => {
-    const data: RecruitmentRequest = convertFormDataToObject(value)
+    const data: RecruitmentRequest = convertFormDataToObject(0, value)
     postRecruitment(data).then(res => {
       if (res.statusCode === 200){
         const viewData = convertGeneralRecruitmentDataToViewData(res.data!)

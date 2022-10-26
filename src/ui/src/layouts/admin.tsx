@@ -12,12 +12,10 @@ import { AppDispatch } from "../store/store"
 import { useEffect } from "react"
 import { getRoles } from "../apis/role"
 import { appendDepartments, appendLevels, appendPositions, appendRoles } from "../store/utilSlice"
-import { getDepartments } from "../apis/department"
-import { getPositions } from "../apis/position"
-import { getLevels } from "../apis/level"
-import { appendEmployees, getEmployees } from "../store/employeeSlice"
+import { appendEmployees } from "../store/employeeSlice"
 import { loadUsers } from "../apis/employee"
-import { convertEmployeeToView, EmployeeViewProps } from "../helpers/employee"
+import { convertEmployeeToView } from "../helpers/employee"
+import { getDepartments, getLevels, getPositions } from "../apis/util"
 
 
 const createRoute = (): JSX.Element => {
@@ -54,7 +52,6 @@ const sidebarMenu: Array<ItemType> = [
   }
 ]
 
-
 const Admin: React.FC = (): JSX.Element => {
   const dispatch = useDispatch<AppDispatch>()
 
@@ -68,23 +65,17 @@ const Admin: React.FC = (): JSX.Element => {
 
     getDepartments()
       .then(res => {
-        if(res.statusCode === 200){
-          dispatch(appendDepartments(res.data!))
-        }
+        dispatch(appendDepartments(res))
       })
 
     getPositions()
       .then(res => {
-        if(res.statusCode === 200){
-          dispatch(appendPositions(res.data!))
-        }
+        dispatch(appendPositions(res))
       })
 
     getLevels()
       .then(res => {
-        if(res.statusCode === 200){
-          dispatch(appendLevels(res.data!))
-        }
+        dispatch(appendLevels(res))
       })
 
     loadUsers()
@@ -100,7 +91,7 @@ const Admin: React.FC = (): JSX.Element => {
   return(
     <Layout>
       <Header className="sticky_header header__container">
-        <Link className="home_link" to="">Recruitment System</Link>
+        <Link className="home_link" to="/">Recruitment System</Link>
       </Header>
       <Layout hasSider>
         <Sider

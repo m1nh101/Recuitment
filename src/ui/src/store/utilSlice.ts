@@ -1,18 +1,16 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { DepartmentProp } from "../apis/department";
-import { LevelProps } from "../apis/level";
-import { PositionProps } from "../apis/position";
 import { RoleProps } from "../apis/role";
+import { DepartmentProps, LevelProps, PositionProps } from "../apis/util";
 import { RootState } from "./store";
 
-interface UtilProp {
+interface UtilProps {
   roles: Array<RoleProps>
   positions: Array<PositionProps>
-  departments: Array<DepartmentProp>
+  departments: Array<DepartmentProps>
   levels: Array<LevelProps>
 }
 
-const initialState: UtilProp = {
+const initialState: UtilProps = {
   roles: [],
   positions: [],
   departments: [],
@@ -29,7 +27,7 @@ const utilSlice = createSlice({
     appendPositions: (state, action: PayloadAction<Array<PositionProps>>) => {
       state.positions = [...state.positions, ...action.payload]
     },
-    appendDepartments: (state, action: PayloadAction<Array<DepartmentProp>>) => {
+    appendDepartments: (state, action: PayloadAction<Array<DepartmentProps>>) => {
       state.departments = [...state.departments, ...action.payload]
     },
     appendLevels: (state, action: PayloadAction<Array<LevelProps>>) => {

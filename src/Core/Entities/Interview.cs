@@ -49,10 +49,12 @@ public class Interview : ModifyEntity
     return this;
   }
 
-  public void Start()
+  public DateTime Start()
   {
     JoinStartTime = DateTime.Now;
     Status = Status.OnProcessing;
+
+    return JoinEndTime;
   }
 
   public void Finish()

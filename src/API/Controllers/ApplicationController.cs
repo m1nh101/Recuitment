@@ -1,9 +1,7 @@
-
 using Core.CQRS.Bookings.BookingInterview;
 using Core.CQRS.Bookings.Cancel;
 using Core.CQRS.Interviews;
 using Core.CQRS.Interviews.Finnish;
-using Core.CQRS.Interviews.Requests;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -62,14 +60,5 @@ public class ApplicationController : ControllerBase
     var response = await _mediator.Send(request);
 
     return Ok(response);
-  }
-
-  [HttpGet]
-  public async Task<IActionResult> GetInterviewByReviewer()
-  {
-    var request = new GetInterviewByReviewerRequest();
-    var response = await _mediator.Send(request);
-
-    return Ok(request);
   }
 }

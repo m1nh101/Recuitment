@@ -2,8 +2,16 @@ using Core.CQRS.Responses;
 using Core.Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using SharedKernel.Enums;
 
 namespace Core.CQRS.Interviews;
+
+public sealed record StartedInterviewResponse(
+  DateTime Time
+)
+{
+  public Status Status { get; } = Status.OnProcessing;
+}
 
 public sealed class StartInterviewRequestHandler
   : IRequestHandler<StartInterviewRequest, ActionResponse>
@@ -25,12 +33,14 @@ public sealed class StartInterviewRequestHandler
     if (application == null)
       return new NotFoundResponse();
 
-    application.Booking!.Interview!.Start();
+    var time = application.Booking!.Interview!.Start();
 
     _context.Applications.Update(application);
 
     await _context.Commit();
 
-    return new SuccessResponse(null, null);
+    var response = new StartedInterviewResponse(time);
+
+    return new SuccessResponse("Ok", response);
   }
 }

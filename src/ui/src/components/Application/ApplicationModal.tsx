@@ -1,7 +1,8 @@
 import { Modal, UploadFile } from "antd"
 import { useForm } from "antd/es/form/Form"
 import { useSelector } from "react-redux"
-import { ApplicationRequestProps, ApplicationViewType, postApplicationToRecruitment } from "../../apis/application"
+import { v4 } from "uuid"
+import { ApplicationRequestProps, ApplicationViewType, postApplicationToRecruitment, Status } from "../../apis/application"
 import { fileUpload } from "../../apis/file"
 import { openSuccessNotification } from "../../App"
 import { getCurrentRecruitment } from "../../store/recruitmentSlice"
@@ -19,16 +20,17 @@ const ApplicationModal: React.FC<CandidateModalProp> = ({...props}): JSX.Element
 
   const handleSubmit = async (value: ApplicationFormValue): Promise<void> => {
     const files = form.getFieldValue('attachment') as UploadFile[]
-    var url = await fileUpload(files[0].originFileObj as File)
+    //var url = await fileUpload(files[0].originFileObj as File)
+    const url = ''
 
-    const data: ApplicationRequestProps = { ...value, ...{ attachment: url, gender: parseInt(value.gender)}}
+    const data: ApplicationRequestProps = { ...value, ...{ attachment: url, gender: parseInt(value.gender), recruitmentId: currentRecruitment}}
 
     postApplicationToRecruitment(currentRecruitment, data)
       .then(res => {
         if (res.statusCode == 200){
-          // const viewItem = { ...res.data!, key: v4()}
-          // props.appendTo(viewItem)
-          // props.changeVisible(false)
+          const viewItem = { ...res.data!, key: v4(), status: Status.WaitBookingInterview}
+          props.appendTo(viewItem)
+          props.changeVisible(false)
           form.resetFields()
           openSuccessNotification(res.message)
         }

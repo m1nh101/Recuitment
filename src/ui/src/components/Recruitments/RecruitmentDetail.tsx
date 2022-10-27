@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { v4 } from "uuid";
-import { ApplicationViewType } from "../../apis/application";
+import { ApplicationViewType, Status } from "../../apis/application";
 import { getRecruitmentDetail, patchRecruitment } from "../../apis/recruitment";
 import { openSuccessNotification } from "../../App";
 import { convertFormDataToObject, convertRecruitmentDetailValueToForm } from "../../helpers/recruitment";
@@ -34,7 +34,15 @@ const RecruitmentDetail: React.FC = (): JSX.Element => {
   }
 
   const appendToCandidateList = (data: ApplicationViewType): void => {
-    // setCandidates([...candidates, data])
+    setCandidates([...candidates, data])
+  }
+
+  const updateStatus = (id: number, status: Status): void => {
+    var index = candidates.findIndex(e => e.id == id);
+
+    if(index != -1){
+      candidates[index].status = status;
+    }
   }
 
   const removeCandidate = (id: number ): void => {
@@ -97,7 +105,10 @@ const RecruitmentDetail: React.FC = (): JSX.Element => {
             changeVisible={setModal}
             appendTo={appendToCandidateList} />
         </div>
-        <ListCandidate remove={removeCandidate} source={candidates}/>
+        <ListCandidate
+          remove={removeCandidate}
+          update={updateStatus}
+          source={candidates}/>
       </div>
     </div>
   )

@@ -88,7 +88,7 @@ public class RecruitmentController : ControllerBase
   }
 
   [HttpPost]
-  [Route("{id:int}/candidates")]
+  [Route("{id:int}/applications")]
   public async Task<IActionResult> AddCandidate([FromRoute] int id,
     [FromBody] ApplyToRecruitmentRequest request)
   {

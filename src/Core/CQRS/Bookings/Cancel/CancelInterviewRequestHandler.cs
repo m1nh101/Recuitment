@@ -26,6 +26,10 @@ public sealed class CancelInterviewRequestHandler
 
     application.Booking!.Cancel();
 
+    _context.Applications.Update(application);
+
+    await _context.Commit();
+
     return new SuccessResponse("Hủy lịch phỏng vấn thành công", null);
   }
 }

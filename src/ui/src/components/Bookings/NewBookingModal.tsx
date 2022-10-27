@@ -1,7 +1,8 @@
 import { Modal } from "antd"
 import { useForm } from "antd/es/form/Form"
-import client from "../../apis/client"
-import BookingForm from "./BookingForm"
+import moment from "moment"
+import { postBooking } from "../../apis/booking"
+import BookingForm, { BookingFormFieldProps } from "./BookingForm"
 
 interface BookingModalProps {
   visible: boolean
@@ -13,23 +14,21 @@ const NewBookingModal: React.FC<BookingModalProps> = ({...props}): JSX.Element =
 
   const [form] = useForm()
 
-  const submitForm = (value: any) => {
+  const submitForm = (value: BookingFormFieldProps) => {
+    const start = moment(value.time[0].format('YYYY-MM-DDTHH:mm:ss[Z]'))
+    const end = moment(value.time[1].format('YYYY-MM-DDTHH:mm:ss[Z]'))
     const payload = {
       applicationId: props.candidate,
       date: value.date,
-      start: value.time[0],
-      end: value.time[1],
+      start: start,
+      end: end,
       reviewerId: value.reviewer
     }
 
-    client.post('/bookings', payload)
-      .then(res => {
-        if(res.data.statusCode === 200){
-          alert("hello")
-        }
-      })
-
-    console.log(payload)
+    postBooking(payload).then(res => {
+      if (res)
+        alert("Ok");
+    })
   }
 
   return (

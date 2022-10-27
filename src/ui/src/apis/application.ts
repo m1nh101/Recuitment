@@ -30,6 +30,7 @@ export interface ApplicationRequestProps extends GeneralApplicationProps {
   attachment: string
   gender: number
   note: string
+  recruitmentId?: number
 }
 
 export type ApplicationResponse = ApplicationRequestProps

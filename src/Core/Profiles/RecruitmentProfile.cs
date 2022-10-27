@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Core.CQRS.Recruitments.Create;
 using Core.CQRS.Recruitments.Update;
 using Core.Entities.Recruitments;
 
@@ -10,5 +11,6 @@ public class RecruitmentProfile : Profile
   {
     CreateMap<Recruitment, UpdateRecruitmentResponse>();
     CreateMap<UpdateRecruitmentRequest, Recruitment>();
+    CreateMap<Recruitment, CreatedRecruitmentResponse>();
   }
 }

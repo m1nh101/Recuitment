@@ -8,6 +8,7 @@ import { useSelector } from "react-redux"
 import { Link } from "react-router-dom"
 import { v4 } from "uuid"
 import { ApplicationInRecruitmentProps, deleteApplicationFromRecruitment, Status } from "../../apis/application"
+import { cancelBooking } from "../../apis/booking"
 import { getCurrentRecruitment } from "../../store/recruitmentSlice"
 import NewBookingModal from "../Bookings/NewBookingModal"
 import UpdateCandidateModal from "./UpdateApplicationModal"
@@ -15,6 +16,7 @@ import UpdateCandidateModal from "./UpdateApplicationModal"
 interface ListCandidateProps {
   source: Array<ApplicationInRecruitmentProps>,
   remove: (id: number) => void
+  update: (id: number, status: Status) => void
 }
 
 const { confirm } = Modal
@@ -42,7 +44,7 @@ const ListCandidate: React.FC<ListCandidateProps> = ({...props}): JSX.Element =>
           data.status === Status.WaitBookingInterview && <Button type="primary" danger onClick={() => {setSelectCandidate(data.id!); showConfirm(data.id!)}}>Xoá</Button>
         }
         {
-          data.status === Status.BookedInterview && <Button type="primary" danger>Huỷ</Button>
+          data.status === Status.BookedInterview && <Button type="primary" onClick={() => {setSelectCandidate(data.id!); showCancelBookingConfirm(data.id!)}} danger>Huỷ</Button>
         }
       </Space>
     )
@@ -106,6 +108,20 @@ const ListCandidate: React.FC<ListCandidateProps> = ({...props}): JSX.Element =>
       }
     });
   };
+
+  const showCancelBookingConfirm = (id: number) => {
+    confirm({
+      title: 'Bancó chắc muốn huỷ?',
+      icon: <ExclamationCircleOutlined />,
+      onOk() {
+        cancelBooking(id).then(res => {
+          if(res){
+            props.update(id, Status.WaitBookingInterview)
+          }
+        })
+      }
+    })
+  }
 
   return (
     <>

@@ -1,5 +1,6 @@
 import { Col, DatePicker, Form, Row, Select, Tag } from "antd"
 import { FormInstance } from "antd/es/form/Form"
+import { Moment } from "moment"
 import { useEffect, useState } from "react"
 import { v4 } from "uuid"
 import { getReviewer, ListReviewerProps } from "../../apis/employee"
@@ -7,6 +8,12 @@ import { getReviewer, ListReviewerProps } from "../../apis/employee"
 interface BookingFormProps {
   onFinish: (value: any) => void
   form: FormInstance
+}
+
+export interface BookingFormFieldProps {
+  date: Moment
+  time: [Moment, Moment]
+  reviewer: string
 }
 
 const { RangePicker } = DatePicker

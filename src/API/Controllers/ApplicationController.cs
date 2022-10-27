@@ -35,8 +35,8 @@ public class ApplicationController : ControllerBase
   public async Task<IActionResult> CancelInterview([FromRoute] int id)
   {
     var request = new CancelBookingRequest(id);
-    var response = await _mediator.Send(request);
-    return Ok(response);
+    var _ = await _mediator.Send(request);
+    return NoContent();
   }
 
   [HttpPatch]

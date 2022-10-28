@@ -1,5 +1,6 @@
 import { Button } from "antd";
 import { useState } from "react";
+import FormContainer from "../components/Form/FormContainer";
 import NewRecruitment from "../components/Recruitments/NewRecruitment";
 import RecruitmentList from "../components/Recruitments/RecruitmentList";
 
@@ -18,7 +19,8 @@ const Recruitment: React.FC = (): JSX.Element => {
       <div className="p-1">
         <RecruitmentList />
       </div>
-      <NewRecruitment changeVisible={setVisible} visible={visible} />
+      {/* <NewRecruitment changeVisible={setVisible} visible={visible} /> */}
+      <FormContainer visible={visible} changeVisible={setVisible}/>
     </div>
   )
 }

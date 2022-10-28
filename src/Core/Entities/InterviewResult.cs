@@ -18,4 +18,18 @@ public class InterviewResult : ModifyEntity
 
   public virtual Interview? Interview { get; set; }
   public virtual Level? Level { get; set; }
+
+  public void Update(InterviewResult result)
+  {
+    Note = result.Note;
+    Experience = result.Experience;
+    Skill = result.Skill;
+    Attitude = result.Attitude;
+    SelfLearning = result.SelfLearning;
+    ResolveProblem = result.ResolveProblem;
+    Desire = result.SelfLearning;
+    SalaryFrom = result.SalaryFrom;
+    SalaryTo = result.SalaryTo;
+    LevelId = result.LevelId;
+  }
 }

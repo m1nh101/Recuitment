@@ -68,6 +68,6 @@ public class Interview : ModifyEntity
     if (Status != SharedKernel.Enums.Status.Done)
       throw new InvalidTimeException($"cannot evaluate when not interview");
 
-    Result = result;
+    Result!.Update(result);
   }
 }

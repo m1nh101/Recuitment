@@ -1,3 +1,5 @@
+using Core.CQRS.Applications.Detail;
+using Core.CQRS.Applications.Update;
 using Core.CQRS.Bookings.BookingInterview;
 using Core.CQRS.Bookings.Cancel;
 using Core.CQRS.Interviews;
@@ -16,6 +18,24 @@ public class ApplicationController : ControllerBase
   public ApplicationController(IMediator mediator)
   {
     _mediator = mediator;
+  }
+
+  [HttpGet]
+  [Route("{id:int}")]
+  public async Task<IActionResult> GetDetail([FromRoute] int id)
+  {
+    var request = new GetApplicationDetailRequest(id);
+    var response = await _mediator.Send(request);
+
+    return Ok(response);
+  }
+
+  [HttpPatch]
+  [Route("{id:int}")]
+  public async Task<IActionResult> UpdateDetail([FromBody] UpdateApplicationRequest request)
+  {
+    var response = await _mediator.Send(request);
+    return Ok(response);
   }
 
   [HttpPost]
